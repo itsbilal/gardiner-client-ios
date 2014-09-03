@@ -12,6 +12,7 @@
 		9CB8DA7D19B55DFE00E4C030 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CB8DA7B19B55DFE00E4C030 /* Main.storyboard */; };
 		9CB8DA7F19B55DFE00E4C030 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CB8DA7E19B55DFE00E4C030 /* Images.xcassets */; };
 		9CB8DA8B19B55DFE00E4C030 /* gardiner_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8DA8A19B55DFE00E4C030 /* gardiner_iosTests.swift */; };
+		9CC6DF1319B73FCF0018A674 /* RestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6DF1219B73FCF0018A674 /* RestApi.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -21,6 +22,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 9CB8DA7119B55DFD00E4C030;
 			remoteInfo = "gardiner-ios";
+		};
+		9CB8DA9919B56A4F00E4C030 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9CB8DA9419B56A4F00E4C030 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F8111E3319A95C8B0040E7D1;
+			remoteInfo = Alamofire;
+		};
+		9CB8DA9B19B56A4F00E4C030 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9CB8DA9419B56A4F00E4C030 /* Alamofire.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F8111E3E19A95C8B0040E7D1;
+			remoteInfo = AlamofireTests;
+		};
+		9CB8DA9E19B56AA600E4C030 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9CB8DA9419B56A4F00E4C030 /* Alamofire.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F8111E3219A95C8B0040E7D1;
+			remoteInfo = Alamofire;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -34,6 +56,8 @@
 		9CB8DA8419B55DFE00E4C030 /* gardiner-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "gardiner-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CB8DA8919B55DFE00E4C030 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9CB8DA8A19B55DFE00E4C030 /* gardiner_iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gardiner_iosTests.swift; sourceTree = "<group>"; };
+		9CB8DA9419B56A4F00E4C030 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
+		9CC6DF1219B73FCF0018A674 /* RestApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestApi.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +84,7 @@
 				9CB8DA7419B55DFE00E4C030 /* gardiner-ios */,
 				9CB8DA8719B55DFE00E4C030 /* gardiner-iosTests */,
 				9CB8DA7319B55DFE00E4C030 /* Products */,
+				9CB8DA9419B56A4F00E4C030 /* Alamofire.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,6 +102,7 @@
 			children = (
 				9CB8DA7719B55DFE00E4C030 /* AppDelegate.swift */,
 				9CB8DA7919B55DFE00E4C030 /* ViewController.swift */,
+				9CC6DF1219B73FCF0018A674 /* RestApi.swift */,
 				9CB8DA7B19B55DFE00E4C030 /* Main.storyboard */,
 				9CB8DA7E19B55DFE00E4C030 /* Images.xcassets */,
 				9CB8DA7519B55DFE00E4C030 /* Supporting Files */,
@@ -109,6 +135,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		9CB8DA9519B56A4F00E4C030 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9CB8DA9A19B56A4F00E4C030 /* Alamofire.framework */,
+				9CB8DA9C19B56A4F00E4C030 /* AlamofireTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -123,6 +158,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				9CB8DA9F19B56AA600E4C030 /* PBXTargetDependency */,
 			);
 			name = "gardiner-ios";
 			productName = "gardiner-ios";
@@ -176,6 +212,12 @@
 			mainGroup = 9CB8DA6919B55DFD00E4C030;
 			productRefGroup = 9CB8DA7319B55DFE00E4C030 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 9CB8DA9519B56A4F00E4C030 /* Products */;
+					ProjectRef = 9CB8DA9419B56A4F00E4C030 /* Alamofire.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				9CB8DA7119B55DFD00E4C030 /* gardiner-ios */,
@@ -183,6 +225,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		9CB8DA9A19B56A4F00E4C030 /* Alamofire.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Alamofire.framework;
+			remoteRef = 9CB8DA9919B56A4F00E4C030 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9CB8DA9C19B56A4F00E4C030 /* AlamofireTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AlamofireTests.xctest;
+			remoteRef = 9CB8DA9B19B56A4F00E4C030 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9CB8DA7019B55DFD00E4C030 /* Resources */ = {
@@ -210,6 +269,7 @@
 			files = (
 				9CB8DA7A19B55DFE00E4C030 /* ViewController.swift in Sources */,
 				9CB8DA7819B55DFE00E4C030 /* AppDelegate.swift in Sources */,
+				9CC6DF1319B73FCF0018A674 /* RestApi.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +288,11 @@
 			isa = PBXTargetDependency;
 			target = 9CB8DA7119B55DFD00E4C030 /* gardiner-ios */;
 			targetProxy = 9CB8DA8519B55DFE00E4C030 /* PBXContainerItemProxy */;
+		};
+		9CB8DA9F19B56AA600E4C030 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Alamofire;
+			targetProxy = 9CB8DA9E19B56AA600E4C030 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -395,6 +460,7 @@
 				9CB8DA9019B55DFE00E4C030 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9CB8DA9119B55DFE00E4C030 /* Build configuration list for PBXNativeTarget "gardiner-iosTests" */ = {
 			isa = XCConfigurationList;
@@ -403,6 +469,7 @@
 				9CB8DA9319B55DFE00E4C030 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
