@@ -26,10 +26,21 @@ class ViewController: UIViewController {
 
     @IBAction func onLogin(sender: UIButton) {
         
-        Alamofire.request(.POST, "http://localhost:8080/user/login", parameters: ["email": textEmail.text,
+        /*Alamofire.request(.POST, "http://localhost:8080/user/login", parameters: ["email": textEmail.text,
             "password": textPassword.text], encoding: .URL)
             .responseJSON ({(request, response, data, error) in
+                var response:NSDictionary = data as NSDictionary
                 
+                println(response["token"])
+            })
+        */
+        
+        var restApi: RestApi = RestApi.instance
+        
+        restApi.setCredentials(textEmail.text, password: textPassword.text, onSuccess: {() in
+                self.textEmail.text = "Success!"
+            }, onFailure: {() in
+                self.textEmail.text = "Fail"
             })
         
     }
