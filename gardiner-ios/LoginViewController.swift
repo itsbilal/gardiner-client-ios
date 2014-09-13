@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class ViewController: UIViewController {
+class LoginViewController: UIViewController {
                             
     @IBOutlet weak var textEmail: UITextField!
     @IBOutlet weak var textPassword: UITextField!
@@ -22,6 +22,10 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+        super.prepareForSegue(segue, sender: sender)
     }
 
     @IBAction func onLogin(sender: UIButton) {
@@ -39,6 +43,7 @@ class ViewController: UIViewController {
         
         restApi.setCredentials(textEmail.text, password: textPassword.text, onSuccess: {() in
                 self.textEmail.text = "Success!"
+                self.performSegueWithIdentifier("onLoginDone", sender: self)
             }, onFailure: {() in
                 self.textEmail.text = "Fail"
             })

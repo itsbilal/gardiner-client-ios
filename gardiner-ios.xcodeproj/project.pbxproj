@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C7905F119C49AF8006649A3 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7905F019C49AF8006649A3 /* MainViewController.swift */; };
 		9CB8DA7819B55DFE00E4C030 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8DA7719B55DFE00E4C030 /* AppDelegate.swift */; };
-		9CB8DA7A19B55DFE00E4C030 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8DA7919B55DFE00E4C030 /* ViewController.swift */; };
+		9CB8DA7A19B55DFE00E4C030 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8DA7919B55DFE00E4C030 /* LoginViewController.swift */; };
 		9CB8DA7D19B55DFE00E4C030 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CB8DA7B19B55DFE00E4C030 /* Main.storyboard */; };
 		9CB8DA7F19B55DFE00E4C030 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CB8DA7E19B55DFE00E4C030 /* Images.xcassets */; };
 		9CB8DA8B19B55DFE00E4C030 /* gardiner_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8DA8A19B55DFE00E4C030 /* gardiner_iosTests.swift */; };
@@ -47,10 +48,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9C7905F019C49AF8006649A3 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		9CB8DA7219B55DFE00E4C030 /* gardiner-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "gardiner-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CB8DA7619B55DFE00E4C030 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9CB8DA7719B55DFE00E4C030 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9CB8DA7919B55DFE00E4C030 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9CB8DA7919B55DFE00E4C030 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		9CB8DA7C19B55DFE00E4C030 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9CB8DA7E19B55DFE00E4C030 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9CB8DA8419B55DFE00E4C030 /* gardiner-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "gardiner-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,8 +103,9 @@
 			isa = PBXGroup;
 			children = (
 				9CB8DA7719B55DFE00E4C030 /* AppDelegate.swift */,
-				9CB8DA7919B55DFE00E4C030 /* ViewController.swift */,
+				9CB8DA7919B55DFE00E4C030 /* LoginViewController.swift */,
 				9CC6DF1219B73FCF0018A674 /* RestApi.swift */,
+				9C7905F019C49AF8006649A3 /* MainViewController.swift */,
 				9CB8DA7B19B55DFE00E4C030 /* Main.storyboard */,
 				9CB8DA7E19B55DFE00E4C030 /* Images.xcassets */,
 				9CB8DA7519B55DFE00E4C030 /* Supporting Files */,
@@ -267,9 +270,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CB8DA7A19B55DFE00E4C030 /* ViewController.swift in Sources */,
+				9CB8DA7A19B55DFE00E4C030 /* LoginViewController.swift in Sources */,
 				9CB8DA7819B55DFE00E4C030 /* AppDelegate.swift in Sources */,
 				9CC6DF1319B73FCF0018A674 /* RestApi.swift in Sources */,
+				9C7905F119C49AF8006649A3 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
