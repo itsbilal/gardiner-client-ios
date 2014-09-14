@@ -39,7 +39,8 @@ class LoginViewController: UIViewController {
         
         restApi.setCredentials(textEmail.text, password: textPassword.text, onSuccess: {() in
                 self.textEmail.text = "Success!"
-                self.performSegueWithIdentifier("onLoginDone", sender: self)
+                self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                })
             }, onFailure: {() in
                 self.textEmail.text = "Fail"
             })

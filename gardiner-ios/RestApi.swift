@@ -37,6 +37,10 @@ class RestApi: NSObject {
         
         super.init()
         
+        if email == nil || password == nil {
+            return
+        }
+        
         request(Alamofire.Method.POST, endpoint: "user/login/", callback: {(request, response, json) in
                 if response?.statusCode != 200 || json.objectForKey("error") != nil {
                     self.logout()
