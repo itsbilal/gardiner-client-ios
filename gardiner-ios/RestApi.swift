@@ -25,6 +25,8 @@ class RestApi: NSObject {
     var email: String!
     var password: String!
     
+    var onLoginCallbacks: [() -> Void] = []
+    
     override init() {
         token = ""
         loggedIn = false
@@ -34,6 +36,30 @@ class RestApi: NSObject {
         password = sharedDefaults.stringForKey("password")
         
         super.init()
+        
+        request(Alamofire.Method.POST, endpoint: "user/login/", callback: {(request, response, json) in
+                if response?.statusCode != 200 || json.objectForKey("error") != nil {
+                    self.logout()
+                    println("Invalid credentials")
+                    
+                    self.email = nil
+                    self.password = nil
+                    
+                } else {
+                    var token:String = json["token"] as String
+                    self.setToken(token)
+                }
+                
+                println(json)
+            }, parameters: ["email": email, "password": password])
+    }
+    
+    func onLogin(callback: () -> Void) {
+        if self.token.isEmpty {
+            onLoginCallbacks.append(callback)
+        } else {
+            callback()
+        }
     }
     
     // Wrapper for the Alamofire.request function that does our own error handling
@@ -48,7 +74,7 @@ class RestApi: NSObject {
                 if response?.statusCode == 200 && json.objectForKey("error") == nil {
                     callback(URLrequest, response, json)
                 } else if json.objectForKey("error") != nil {
-                    if (json.objectForKey("code") as Int) == 1000 && self.email != nil {
+                    if (json.objectForKey("code") as? Int) == 1000 && self.email != nil {
                         // Relogin
                         println("Relogin time!")
                         self.logout()
@@ -109,6 +135,12 @@ class RestApi: NSObject {
         self.token = token
         
         Alamofire.Manager.sharedInstance.defaultHeaders["X-WWW-Authenticate"] = self.token
+        
+        for callback in onLoginCallbacks {
+            callback()
+        }
+        
+        onLoginCallbacks.removeAll()
     }
     
     func logout() {

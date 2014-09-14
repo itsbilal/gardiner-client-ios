@@ -24,10 +24,6 @@ class LoginViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        super.prepareForSegue(segue, sender: sender)
-    }
-
     @IBAction func onLogin(sender: UIButton) {
         
         /*Alamofire.request(.POST, "http://localhost:8080/user/login", parameters: ["email": textEmail.text,

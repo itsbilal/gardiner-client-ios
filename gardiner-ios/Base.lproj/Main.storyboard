@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.8" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="2A0-fd-WoA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BhB-iB-sfr">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
         <!--Login View Controller-->
@@ -16,11 +16,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XTP-jo-6Jf">
-                                <rect key="frame" x="16" y="45" width="568" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WOs-9R-IDE">
                                 <rect key="frame" x="16" y="101" width="568" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -35,13 +30,18 @@
                                     <action selector="onLogin:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="xfa-ju-hcx"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XTP-jo-6Jf">
+                                <rect key="frame" x="16" y="45" width="568" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="textEmail" destination="XTP-jo-6Jf" id="gKH-ao-cJh"/>
                         <outlet property="textPassword" destination="WOs-9R-IDE" id="IaX-OF-zGe"/>
-                        <segue destination="2A0-fd-WoA" kind="show" identifier="onLoginDone" id="BXm-7f-5eX"/>
+                        <segue destination="BhB-iB-sfr" kind="show" identifier="onLoginDone" id="Rzz-73-d3G"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -49,25 +49,33 @@
             <point key="canvasLocation" x="107" y="136"/>
         </scene>
         <!--Main View Controller-->
-        <scene sceneID="Rvq-Rz-IDW">
+        <scene sceneID="afu-z8-1ZS">
             <objects>
-                <viewController id="2A0-fd-WoA" customClass="MainViewController" customModule="gardiner_ios" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="bmP-wG-qp6"/>
-                        <viewControllerLayoutGuide type="bottom" id="Q1R-Qy-icu"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="cDW-4a-YMz">
+                <tableViewController id="BhB-iB-sfr" customClass="MainViewController" customModule="gardiner_ios" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ZVy-71-vrd">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="homeListCell" id="vfe-d3-jiZ">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vfe-d3-jiZ" id="0X4-l0-n1e">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="BhB-iB-sfr" id="XZU-n8-zoS"/>
+                            <outlet property="delegate" destination="BhB-iB-sfr" id="Mht-bQ-Y6E"/>
+                        </connections>
+                    </tableView>
                     <connections>
-                        <segue destination="vXZ-lx-hvc" kind="show" identifier="onLoginNeeded" id="JOP-4h-Gtt"/>
+                        <segue destination="vXZ-lx-hvc" kind="show" identifier="onLoginNeeded" id="bH5-im-aZm"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pTM-nt-bsD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zNO-H7-BGt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="949" y="136"/>
+            <point key="canvasLocation" x="1029" y="136"/>
         </scene>
     </scenes>
 </document>
