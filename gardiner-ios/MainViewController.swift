@@ -55,6 +55,18 @@ class MainViewController: UITableViewController {
         return self.homeList.count
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        
+        self.performSegueWithIdentifier("homeListDetail", sender: self.homeList[indexPath.row])
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "homeListDetail" {
+            (segue.destinationViewController as PersonLocationViewController).contact = sender as Contact
+        }
+    }
+    
     func reloadHome() -> Void {
         RestApi.instance.request(.GET, endpoint: "locations/", callback: { (request, response, json) -> Void in
             self.homeList = Contact.parseList(json)
