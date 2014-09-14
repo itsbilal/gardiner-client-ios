@@ -12,11 +12,10 @@ import UIKit
 class MainViewController: UITableViewController {
     
     var homeList: [Contact] = []
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -51,10 +50,6 @@ class MainViewController: UITableViewController {
         return cell
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         println("Counting list")
         return self.homeList.count
@@ -65,6 +60,8 @@ class MainViewController: UITableViewController {
             self.homeList = Contact.parseList(json)
             
             self.tableView.reloadData()
+            
         })
     }
+    
 }
