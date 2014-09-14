@@ -24,6 +24,8 @@ class Contact {
                 contact.id          = rawContact["id"] as String
                 contact.name        = rawContact["name"] as String
                 contact.location    = rawContact["location"] as? String
+                
+                list.append(contact)
             }
         }
         

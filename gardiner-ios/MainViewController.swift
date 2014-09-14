@@ -56,6 +56,7 @@ class MainViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        println("Counting list")
         return self.homeList.count
     }
     
