@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C52A31419C546A10067D349 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB8DA9A19B56A4F00E4C030 /* Alamofire.framework */; };
+		9C52A31619C546F50067D349 /* Alamofire.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9CB8DA9A19B56A4F00E4C030 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C7905F119C49AF8006649A3 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7905F019C49AF8006649A3 /* MainViewController.swift */; };
 		9CB8DA7819B55DFE00E4C030 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8DA7719B55DFE00E4C030 /* AppDelegate.swift */; };
 		9CB8DA7A19B55DFE00E4C030 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8DA7919B55DFE00E4C030 /* LoginViewController.swift */; };
@@ -47,6 +49,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		9C52A31519C546D90067D349 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9C52A31619C546F50067D349 /* Alamofire.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		9C7905F019C49AF8006649A3 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		9CB8DA7219B55DFE00E4C030 /* gardiner-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "gardiner-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C52A31419C546A10067D349 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +173,7 @@
 				9CB8DA6E19B55DFD00E4C030 /* Sources */,
 				9CB8DA6F19B55DFD00E4C030 /* Frameworks */,
 				9CB8DA7019B55DFD00E4C030 /* Resources */,
+				9C52A31519C546D90067D349 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -395,6 +412,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = "gardiner-ios/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -406,6 +424,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = "gardiner-ios/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
