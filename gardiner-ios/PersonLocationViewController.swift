@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import MapKit
 
 class PersonLocationViewController: UIViewController {
     
     @IBOutlet weak var idLabel: UILabel!
+    @IBOutlet weak var mapView: MKMapView!
+    
     var contact:Contact = Contact()
 
     override func viewDidLoad() {
@@ -19,6 +22,14 @@ class PersonLocationViewController: UIViewController {
         // Do any additional setup after loading the view.
         idLabel.text = contact.id
         self.navigationItem.title = contact.name
+        
+        if contact.locations.count > 0 {
+            setMapLocation(contact.locations[0]["latX"],
+                longitude: contact.locations[0]["latY"])
+        } else {
+            mapView.hidden = true
+            println("hiding mapview")
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,5 +46,17 @@ class PersonLocationViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func setMapLocation(latitude: Double?, longitude: Double?) {
+        var annotation:MKPointAnnotation = MKPointAnnotation()
+        var coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!)
+        
+        annotation.setCoordinate(coordinate)
+        annotation.title = contact.name
+        annotation.subtitle = "Location"
+        
+        mapView.addAnnotation(annotation)
+        mapView.setCenterCoordinate(coordinate, animated: false)
+    }
 
 }
