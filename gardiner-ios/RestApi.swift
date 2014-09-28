@@ -138,7 +138,7 @@ class RestApi: NSObject {
         self.loggedIn = true
         self.token = token
         
-        Alamofire.Manager.sharedInstance.defaultHeaders["X-WWW-Authenticate"] = self.token
+        Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders?["X-WWW-Authenticate"] = self.token
         
         for callback in onLoginCallbacks {
             callback()
@@ -151,6 +151,6 @@ class RestApi: NSObject {
         self.loggedIn = false
         self.token = ""
         
-        Alamofire.Manager.sharedInstance.defaultHeaders.removeValueForKey("X-WWW-Authenticate")
+        Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders?.removeValueForKey("X-WWW-Authenticate")
     }
 }
