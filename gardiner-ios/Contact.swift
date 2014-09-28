@@ -41,6 +41,9 @@ class Contact {
             
             for rawLocation in locations{
                 var location:NSDictionary = rawLocation as NSDictionary
+                if location["latX"] == nil {
+                    continue
+                }
                 
                 contact.locations.append(["latX": location["latX"] as Double,
                     "latY": location["latY"] as Double])

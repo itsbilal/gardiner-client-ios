@@ -8,14 +8,26 @@
 
 import Foundation
 import UIKit
+import Alamofire
+import CoreLocation
 
-class MainViewController: UITableViewController {
+class MainViewController: UITableViewController, CLLocationManagerDelegate {
     
     var homeList: [Contact] = []
+    var locationManager:CLLocationManager = CLLocationManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        
+        if CLLocationManager.locationServicesEnabled() {
+            
+            locationManager.requestAlwaysAuthorization()
+        }
+        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -39,6 +51,37 @@ class MainViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == CLAuthorizationStatus.Authorized {
+            locationManager.startUpdatingLocation()
+        } else {
+            println("Authorization denied for location")
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        println("Received location update")
+        var location:CLLocation = locations.last as CLLocation
+        locationManager.stopUpdatingLocation()
+        
+        var parameters:[String:String] = [
+            "latX": NSString(format: "%f", location.coordinate.latitude),
+            "latY": NSString(format: "%f", location.coordinate.longitude)
+        ]
+        
+        RestApi.instance.onLogin {() -> Void in
+            
+            RestApi.instance.request(Alamofire.Method.POST, endpoint: "locations/new", callback: { (request, response, json) -> Void in
+                
+                if json["success"] as? Int == 1 {
+                    println("Location updated successfully")
+                }
+                
+                }, parameters: parameters)
+        }
+        
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
