@@ -15,18 +15,13 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
     
     var homeList: [Contact] = []
     var locationManager:CLLocationManager = CLLocationManager()
+    var locations: [[String: String]] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
         
-        if CLLocationManager.locationServicesEnabled() {
-            
-            locationManager.requestAlwaysAuthorization()
-        }
         
     }
     
@@ -51,37 +46,6 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status == CLAuthorizationStatus.Authorized {
-            locationManager.startUpdatingLocation()
-        } else {
-            println("Authorization denied for location")
-        }
-    }
-    
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        println("Received location update")
-        var location:CLLocation = locations.last as CLLocation
-        locationManager.stopUpdatingLocation()
-        
-        var parameters:[String:String] = [
-            "latX": NSString(format: "%f", location.coordinate.latitude),
-            "latY": NSString(format: "%f", location.coordinate.longitude)
-        ]
-        
-        RestApi.instance.onLogin {() -> Void in
-            
-            RestApi.instance.request(Alamofire.Method.POST, endpoint: "locations/new", callback: { (request, response, json) -> Void in
-                
-                if json["success"] as? Int == 1 {
-                    println("Location updated successfully")
-                }
-                
-                }, parameters: parameters)
-        }
-        
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -116,6 +80,19 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
             
             self.tableView.reloadData()
             
+        })
+        
+        RestApi.instance.request(.GET, endpoint: "user/myself", callback: { (request, response, json) -> Void in
+            for place in json["places"] as [ NSDictionary ] {
+                var latitude:Double     = place["latX"] as Double
+                var longitude:Double    = place["latY"] as Double
+                var identifier:String   = place["id"] as String
+                
+                var region:CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(latitude, longitude), radius: 100, identifier: identifier)
+                
+                (UIApplication.sharedApplication().delegate as AppDelegate).locations[identifier] = region
+                (UIApplication.sharedApplication().delegate as AppDelegate).locationsUpdated()
+            }
         })
     }
     

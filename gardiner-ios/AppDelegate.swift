@@ -7,15 +7,76 @@
 //
 
 import UIKit
+import CoreLocation
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
                             
     var window: UIWindow?
-
+    var locationManager: CLLocationManager = CLLocationManager()
+    
+    var locations: [String: CLRegion] = [:]
+    
+    func locationsUpdated() {
+        if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.Authorized || !CLLocationManager.isMonitoringAvailableForClass(AppDelegate) {
+            return
+        }
+        
+        for (name, region) in locations {
+            locationManager.startMonitoringForRegion(region)
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == CLAuthorizationStatus.Authorized {
+            locationManager.startUpdatingLocation()
+        } else {
+            println("Authorization denied for location")
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
+        println("Entered region \(region.identifier)")
+    }
+    
+    func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
+        println("Exited region \(region.identifier)")
+    }
+    
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        println("Received location update")
+        var location:CLLocation = locations.last as CLLocation
+        locationManager.stopUpdatingLocation()
+        
+        var parameters:[String:String] = [
+            "latX": NSString(format: "%f", location.coordinate.latitude),
+            "latY": NSString(format: "%f", location.coordinate.longitude)
+        ]
+        
+        RestApi.instance.onLogin {() -> Void in
+            
+            RestApi.instance.request(.POST, endpoint: "locations/new", callback: { (request, response, json) -> Void in
+                
+                if json["success"] as? Int == 1 {
+                    println("Location updated successfully")
+                }
+                
+                }, parameters: parameters)
+            
+        }
+        
+    }
 
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
         // Override point for customization after application launch.
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        
+        if CLLocationManager.locationServicesEnabled() {
+            
+            locationManager.requestAlwaysAuthorization()
+        }
+        
         return true
     }
 
@@ -27,6 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication!) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        locationManager.stopUpdatingLocation()
     }
 
     func applicationWillEnterForeground(application: UIApplication!) {
@@ -35,10 +97,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication!) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
     }
 
     func applicationWillTerminate(application: UIApplication!) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
     }
 
 
