@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var locations: [String: CLRegion] = [:]
     
     func locationsUpdated() {
-        if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.Authorized || !CLLocationManager.isMonitoringAvailableForClass(AppDelegate) {
+        if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.Authorized || !CLLocationManager.isMonitoringAvailableForClass(CLCircularRegion) {
             return
         }
         
