@@ -10,6 +10,7 @@
 		9C52A31419C546A10067D349 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB8DA9A19B56A4F00E4C030 /* Alamofire.framework */; };
 		9C52A31619C546F50067D349 /* Alamofire.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9CB8DA9A19B56A4F00E4C030 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C7905F119C49AF8006649A3 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7905F019C49AF8006649A3 /* MainViewController.swift */; };
+		9C86D4A019F4A45A00E3C30F /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C86D49F19F4A45A00E3C30F /* ContactsViewController.swift */; };
 		9C8861E619C5F51E00943DB3 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8861E519C5F51E00943DB3 /* Contact.swift */; };
 		9C8861EB19C64FFA00943DB3 /* PersonLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8861EA19C64FFA00943DB3 /* PersonLocationViewController.swift */; };
 		9CB8DA7819B55DFE00E4C030 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8DA7719B55DFE00E4C030 /* AppDelegate.swift */; };
@@ -66,6 +67,7 @@
 
 /* Begin PBXFileReference section */
 		9C7905F019C49AF8006649A3 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		9C86D49F19F4A45A00E3C30F /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 		9C8861E519C5F51E00943DB3 /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		9C8861EA19C64FFA00943DB3 /* PersonLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonLocationViewController.swift; sourceTree = "<group>"; };
 		9CB8DA7219B55DFE00E4C030 /* gardiner-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "gardiner-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,6 +133,7 @@
 				9CB8DA7E19B55DFE00E4C030 /* Images.xcassets */,
 				9CB8DA7519B55DFE00E4C030 /* Supporting Files */,
 				9C8861EA19C64FFA00943DB3 /* PersonLocationViewController.swift */,
+				9C86D49F19F4A45A00E3C30F /* ContactsViewController.swift */,
 			);
 			path = "gardiner-ios";
 			sourceTree = "<group>";
@@ -294,6 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C8861EB19C64FFA00943DB3 /* PersonLocationViewController.swift in Sources */,
+				9C86D4A019F4A45A00E3C30F /* ContactsViewController.swift in Sources */,
 				9CB8DA7A19B55DFE00E4C030 /* LoginViewController.swift in Sources */,
 				9CB8DA7819B55DFE00E4C030 /* AppDelegate.swift in Sources */,
 				9C8861E619C5F51E00943DB3 /* Contact.swift in Sources */,

@@ -90,8 +90,10 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
                 
                 var region:CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(latitude, longitude), radius: 100, identifier: identifier)
                 
-                (UIApplication.sharedApplication().delegate as AppDelegate).locations[identifier] = region
-                (UIApplication.sharedApplication().delegate as AppDelegate).locationsUpdated()
+                let appDel:AppDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+                
+                appDel.locations[identifier] = region
+                appDel.locationsUpdated()
             }
         })
     }
