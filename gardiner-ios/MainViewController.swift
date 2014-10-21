@@ -92,7 +92,7 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
                 
                 let appDel:AppDelegate = UIApplication.sharedApplication().delegate as AppDelegate
                 
-                appDel.locations[identifier] = region
+                appDel.locations.append(region)
                 appDel.locationsUpdated()
             }
         })

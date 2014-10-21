@@ -15,14 +15,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var window: UIWindow?
     var locationManager: CLLocationManager = CLLocationManager()
     
-    var locations: [String: CLRegion] = [:]
+    var locations: [CLRegion] = []
     
     func locationsUpdated() {
         if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.Authorized || !CLLocationManager.isMonitoringAvailableForClass(CLCircularRegion) {
             return
         }
         
-        for (name, region) in locations {
+        for region in locations {
             locationManager.startMonitoringForRegion(region)
         }
     }
@@ -37,10 +37,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
         println("Entered region \(region.identifier)")
+        
+        RestApi.instance.request(.POST, endpoint: "locations/enter", callback: { (request, response, json) -> Void in
+            // Probably do something
+        }, parameters: ["id": region.identifier])
     }
     
     func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
         println("Exited region \(region.identifier)")
+        
+        RestApi.instance.request(.POST, endpoint: "locations/leave", callback: { (request, response, json) -> Void in
+            // Probably do something
+        }, parameters: ["id": region.identifier])
     }
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
@@ -53,6 +61,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             "latY": NSString(format: "%f", location.coordinate.longitude)
         ]
         
+        for place in self.locations {
+            if (place as CLCircularRegion).containsCoordinate(location.coordinate) {
+                parameters["at"] = place.identifier
+                break
+            }
+        }
+        
         RestApi.instance.onLogin {() -> Void in
             
             RestApi.instance.request(.POST, endpoint: "locations/new", callback: { (request, response, json) -> Void in
@@ -61,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     println("Location updated successfully")
                 }
                 
-                }, parameters: parameters)
+            }, parameters: parameters)
             
         }
         
