@@ -52,7 +52,7 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
         var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("homeListCell", forIndexPath: indexPath) as UITableViewCell
         var listItem:Contact = self.homeList[indexPath.row]
         
-        cell.textLabel?.text = listItem.name
+        cell.textLabel.text = listItem.name
         
         return cell
     }

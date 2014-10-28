@@ -9,7 +9,7 @@
 import Foundation
 import Alamofire
 
-let BASE_URL:String = "http://bilal-oneblue:8080/"
+let BASE_URL:String = "http://104.131.171.82:8080/"
 
 class RestApi: NSObject {
     class var instance: RestApi {
@@ -71,7 +71,15 @@ class RestApi: NSObject {
         
         Alamofire.request(method, BASE_URL + endpoint, parameters: parameters, encoding: .URL)
             .responseJSON { (URLrequest, response, data, error) -> Void in
+                if error != nil {
+                    return
+                }
+                
                 var json:NSDictionary = data as NSDictionary;
+                
+                if json["error"] != nil {
+                    return
+                }
                 
                 println(json)
                 
