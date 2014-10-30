@@ -175,9 +175,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9CB8DA7119B55DFD00E4C030 /* gardiner-ios */ = {
+		9CB8DA7119B55DFD00E4C030 /* Project Gardiner */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9CB8DA8E19B55DFE00E4C030 /* Build configuration list for PBXNativeTarget "gardiner-ios" */;
+			buildConfigurationList = 9CB8DA8E19B55DFE00E4C030 /* Build configuration list for PBXNativeTarget "Project Gardiner" */;
 			buildPhases = (
 				9CB8DA6E19B55DFD00E4C030 /* Sources */,
 				9CB8DA6F19B55DFD00E4C030 /* Frameworks */,
@@ -189,7 +189,7 @@
 			dependencies = (
 				9CB8DA9F19B56AA600E4C030 /* PBXTargetDependency */,
 			);
-			name = "gardiner-ios";
+			name = "Project Gardiner";
 			productName = "gardiner-ios";
 			productReference = 9CB8DA7219B55DFE00E4C030 /* gardiner-ios.app */;
 			productType = "com.apple.product-type.application";
@@ -249,7 +249,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				9CB8DA7119B55DFD00E4C030 /* gardiner-ios */,
+				9CB8DA7119B55DFD00E4C030 /* Project Gardiner */,
 				9CB8DA8319B55DFE00E4C030 /* gardiner-iosTests */,
 			);
 		};
@@ -319,7 +319,7 @@
 /* Begin PBXTargetDependency section */
 		9CB8DA8619B55DFE00E4C030 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9CB8DA7119B55DFD00E4C030 /* gardiner-ios */;
+			target = 9CB8DA7119B55DFD00E4C030 /* Project Gardiner */;
 			targetProxy = 9CB8DA8519B55DFE00E4C030 /* PBXContainerItemProxy */;
 		};
 		9CB8DA9F19B56AA600E4C030 /* PBXTargetDependency */ = {
@@ -488,7 +488,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9CB8DA8E19B55DFE00E4C030 /* Build configuration list for PBXNativeTarget "gardiner-ios" */ = {
+		9CB8DA8E19B55DFE00E4C030 /* Build configuration list for PBXNativeTarget "Project Gardiner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9CB8DA8F19B55DFE00E4C030 /* Debug */,
