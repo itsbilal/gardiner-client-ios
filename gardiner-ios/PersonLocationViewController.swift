@@ -20,7 +20,7 @@ class PersonLocationViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        idLabel.text = contact.id
+        //idLabel.text = contact.id
         self.navigationItem.title = contact.name
         
         if contact.locations.count > 0 {
@@ -57,6 +57,10 @@ class PersonLocationViewController: UIViewController {
         
         mapView.addAnnotation(annotation)
         mapView.setCenterCoordinate(coordinate, animated: false)
+        // Set region
+        
+        var region:MKCoordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000)
+        mapView.region = region
     }
 
 }
