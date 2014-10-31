@@ -70,7 +70,7 @@
 		9C86D49F19F4A45A00E3C30F /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 		9C8861E519C5F51E00943DB3 /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		9C8861EA19C64FFA00943DB3 /* PersonLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonLocationViewController.swift; sourceTree = "<group>"; };
-		9CB8DA7219B55DFE00E4C030 /* gardiner-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "gardiner-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CB8DA7219B55DFE00E4C030 /* gardiner-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "gardiner-ios.app"; path = "Project Gardiner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CB8DA7619B55DFE00E4C030 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9CB8DA7719B55DFE00E4C030 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9CB8DA7919B55DFE00E4C030 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -175,9 +175,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9CB8DA7119B55DFD00E4C030 /* Project Gardiner */ = {
+		9CB8DA7119B55DFD00E4C030 /* Gardiner */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9CB8DA8E19B55DFE00E4C030 /* Build configuration list for PBXNativeTarget "Project Gardiner" */;
+			buildConfigurationList = 9CB8DA8E19B55DFE00E4C030 /* Build configuration list for PBXNativeTarget "Gardiner" */;
 			buildPhases = (
 				9CB8DA6E19B55DFD00E4C030 /* Sources */,
 				9CB8DA6F19B55DFD00E4C030 /* Frameworks */,
@@ -189,7 +189,7 @@
 			dependencies = (
 				9CB8DA9F19B56AA600E4C030 /* PBXTargetDependency */,
 			);
-			name = "Project Gardiner";
+			name = Gardiner;
 			productName = "gardiner-ios";
 			productReference = 9CB8DA7219B55DFE00E4C030 /* gardiner-ios.app */;
 			productType = "com.apple.product-type.application";
@@ -249,7 +249,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				9CB8DA7119B55DFD00E4C030 /* Project Gardiner */,
+				9CB8DA7119B55DFD00E4C030 /* Gardiner */,
 				9CB8DA8319B55DFE00E4C030 /* gardiner-iosTests */,
 			);
 		};
@@ -319,7 +319,7 @@
 /* Begin PBXTargetDependency section */
 		9CB8DA8619B55DFE00E4C030 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9CB8DA7119B55DFD00E4C030 /* Project Gardiner */;
+			target = 9CB8DA7119B55DFD00E4C030 /* Gardiner */;
 			targetProxy = 9CB8DA8519B55DFE00E4C030 /* PBXContainerItemProxy */;
 		};
 		9CB8DA9F19B56AA600E4C030 /* PBXTargetDependency */ = {
@@ -488,7 +488,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9CB8DA8E19B55DFE00E4C030 /* Build configuration list for PBXNativeTarget "Project Gardiner" */ = {
+		9CB8DA8E19B55DFE00E4C030 /* Build configuration list for PBXNativeTarget "Gardiner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9CB8DA8F19B55DFE00E4C030 /* Debug */,

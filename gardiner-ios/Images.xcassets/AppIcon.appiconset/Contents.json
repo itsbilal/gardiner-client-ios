@@ -11,13 +11,15 @@
       "scale" : "2x"
     },
     {
-      "idiom" : "iphone",
       "size" : "60x60",
+      "idiom" : "iphone",
+      "filename" : "Project-Gardiner-icon_2.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "iphone",
       "size" : "60x60",
+      "idiom" : "iphone",
+      "filename" : "Project-Gardiner-icon_3.png",
       "scale" : "3x"
     }
   ],
