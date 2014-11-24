@@ -27,23 +27,27 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Places" id="EMV-wP-NuU">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="MGS-LB-UrP"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="MGS-LB-UrP">
+                            <connections>
+                                <segue destination="Vjt-wU-7na" kind="show" id="W5H-WU-lqQ"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r4D-Ve-zaK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2588" y="-746"/>
         </scene>
-        <!--View Controller-->
+        <!--Add Place-->
         <scene sceneID="e2J-CZ-5xr">
             <objects>
-                <viewController id="Vjt-wU-7na" sceneMemberID="viewController">
+                <viewController title="Add Place" id="Vjt-wU-7na" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="g5x-sG-lpK"/>
                         <viewControllerLayoutGuide type="bottom" id="3Hi-DX-HuK"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="y5L-U3-iZ1">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
