@@ -13,7 +13,6 @@ class ContactsViewController: UIViewController, UITableViewDataSource, UITableVi
     var contacts:[Contact] = []
     
     @IBOutlet weak var tableView: UITableView!
-    
     class ContactsSearchDelegate: NSObject, UITableViewDataSource, UISearchDisplayDelegate, UITableViewDelegate {
         var searchContacts:[Contact] = []
         
