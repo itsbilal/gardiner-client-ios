@@ -8,7 +8,16 @@
 
 import UIKit
 
+class Place {
+    var name:String = ""
+    var id:String = ""
+    var latitude: Double = 0.0
+    var longitude: Double = 0.0
+}
+
 class PlacesListViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    var places: [Place] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +31,22 @@ class PlacesListViewController: UITableViewController, UITableViewDataSource, UI
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        RestApi.instance.request(.GET, endpoint: "user/myself", callback: { (request, response, json) -> Void in
+            for place in json["places"] as [[String: AnyObject]] {
+                var placeObj:Place = Place()
+                placeObj.name = place["title"] as String
+                placeObj.id = place["id"] as String
+                placeObj.latitude = place["latX"] as Double
+                placeObj.longitude = place["latY"] as Double
+                
+                self.places.append(placeObj)
+            }
+            
+            self.tableView.reloadData()
+        })
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -33,24 +58,25 @@ class PlacesListViewController: UITableViewController, UITableViewDataSource, UI
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 0
+        return places.count
     }
 
-    /*
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as UITableViewCell
+        var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("placeListCell", forIndexPath: indexPath) as UITableViewCell
 
         // Configure the cell...
+        cell.textLabel.text = places[indexPath.row].name
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.
