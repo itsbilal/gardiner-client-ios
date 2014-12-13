@@ -14,6 +14,7 @@
 		9C86D4A019F4A45A00E3C30F /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C86D49F19F4A45A00E3C30F /* ContactsViewController.swift */; };
 		9C8861E619C5F51E00943DB3 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8861E519C5F51E00943DB3 /* Contact.swift */; };
 		9C8861EB19C64FFA00943DB3 /* PersonLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8861EA19C64FFA00943DB3 /* PersonLocationViewController.swift */; };
+		9CABA0711A3BFEE2000FDE21 /* NewPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CABA0701A3BFEE2000FDE21 /* NewPlaceViewController.swift */; };
 		9CB8DA7819B55DFE00E4C030 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8DA7719B55DFE00E4C030 /* AppDelegate.swift */; };
 		9CB8DA7A19B55DFE00E4C030 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8DA7919B55DFE00E4C030 /* LoginViewController.swift */; };
 		9CB8DA7D19B55DFE00E4C030 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CB8DA7B19B55DFE00E4C030 /* Main.storyboard */; };
@@ -72,6 +73,7 @@
 		9C86D49F19F4A45A00E3C30F /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 		9C8861E519C5F51E00943DB3 /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		9C8861EA19C64FFA00943DB3 /* PersonLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonLocationViewController.swift; sourceTree = "<group>"; };
+		9CABA0701A3BFEE2000FDE21 /* NewPlaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPlaceViewController.swift; sourceTree = "<group>"; };
 		9CB8DA7219B55DFE00E4C030 /* Gardiner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gardiner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CB8DA7619B55DFE00E4C030 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9CB8DA7719B55DFE00E4C030 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				9C7905F019C49AF8006649A3 /* MainViewController.swift */,
 				9C8861E519C5F51E00943DB3 /* Contact.swift */,
 				9CB8DA7B19B55DFE00E4C030 /* Main.storyboard */,
+				9CABA0701A3BFEE2000FDE21 /* NewPlaceViewController.swift */,
 				9CB8DA7E19B55DFE00E4C030 /* Images.xcassets */,
 				9CB8DA7519B55DFE00E4C030 /* Supporting Files */,
 				9C8861EA19C64FFA00943DB3 /* PersonLocationViewController.swift */,
@@ -306,6 +309,7 @@
 				9C4F92481A2537FF00F84200 /* PlacesListViewController.swift in Sources */,
 				9C8861E619C5F51E00943DB3 /* Contact.swift in Sources */,
 				9CC6DF1319B73FCF0018A674 /* RestApi.swift in Sources */,
+				9CABA0711A3BFEE2000FDE21 /* NewPlaceViewController.swift in Sources */,
 				9C7905F119C49AF8006649A3 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
