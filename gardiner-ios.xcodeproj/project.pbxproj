@@ -21,6 +21,7 @@
 		9CB8DA7F19B55DFE00E4C030 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CB8DA7E19B55DFE00E4C030 /* Images.xcassets */; };
 		9CB8DA8B19B55DFE00E4C030 /* gardiner_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8DA8A19B55DFE00E4C030 /* gardiner_iosTests.swift */; };
 		9CC6DF1319B73FCF0018A674 /* RestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6DF1219B73FCF0018A674 /* RestApi.swift */; };
+		9CDB38171A3CE89D00F52A26 /* NewPlace2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDB38161A3CE89D00F52A26 /* NewPlace2ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		9CB8DA8A19B55DFE00E4C030 /* gardiner_iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gardiner_iosTests.swift; sourceTree = "<group>"; };
 		9CB8DA9419B56A4F00E4C030 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		9CC6DF1219B73FCF0018A674 /* RestApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestApi.swift; sourceTree = "<group>"; };
+		9CDB38161A3CE89D00F52A26 /* NewPlace2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPlace2ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 				9C8861E519C5F51E00943DB3 /* Contact.swift */,
 				9CB8DA7B19B55DFE00E4C030 /* Main.storyboard */,
 				9CABA0701A3BFEE2000FDE21 /* NewPlaceViewController.swift */,
+				9CDB38161A3CE89D00F52A26 /* NewPlace2ViewController.swift */,
 				9CB8DA7E19B55DFE00E4C030 /* Images.xcassets */,
 				9CB8DA7519B55DFE00E4C030 /* Supporting Files */,
 				9C8861EA19C64FFA00943DB3 /* PersonLocationViewController.swift */,
@@ -310,6 +313,7 @@
 				9C8861E619C5F51E00943DB3 /* Contact.swift in Sources */,
 				9CC6DF1319B73FCF0018A674 /* RestApi.swift in Sources */,
 				9CABA0711A3BFEE2000FDE21 /* NewPlaceViewController.swift in Sources */,
+				9CDB38171A3CE89D00F52A26 /* NewPlace2ViewController.swift in Sources */,
 				9C7905F119C49AF8006649A3 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

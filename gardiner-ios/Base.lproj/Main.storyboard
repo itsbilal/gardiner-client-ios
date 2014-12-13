@@ -61,20 +61,24 @@
                             <constraint firstAttribute="trailingMargin" secondItem="vav-DJ-hY2" secondAttribute="trailing" constant="-16" id="XFq-NW-rgV"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Add Place" id="wi8-jx-l5r">
+                    <navigationItem key="navigationItem" title="Map" id="wi8-jx-l5r">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="Z5G-Wc-nPh">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="onCancelButtonClick:" destination="Vjt-wU-7na" id="Yrr-s5-Qc2"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Next" style="done" id="Rvp-rd-sAz">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Next" style="done" id="Rvp-rd-sAz">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <segue destination="A92-GP-Haj" kind="show" id="dhW-UE-Hai"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="mapView" destination="vav-DJ-hY2" id="FxA-tt-GPL"/>
+                        <outlet property="nextBarButton" destination="Rvp-rd-sAz" id="3PH-CM-g1e"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fHb-ad-e3t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -83,7 +87,7 @@
         <!--Add Place-->
         <scene sceneID="g8D-Vj-PA7">
             <objects>
-                <tableViewController title="Add Place" id="A92-GP-Haj" sceneMemberID="viewController">
+                <tableViewController title="Add Place" id="A92-GP-Haj" customClass="NewPlace2ViewController" customModule="Gardiner" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="y9F-ze-MAt">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -96,29 +100,23 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aIr-Pf-Wbb" id="Th5-Kd-HBH">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nIf-bd-4Jo">
-                                                    <rect key="frame" x="100" y="9" width="492" height="30"/>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nIf-bd-4Jo">
+                                                    <rect key="frame" x="17" y="9" width="575" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xcy-0p-vZ2">
-                                                    <rect key="frame" x="15" y="13" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="1f8-PZ-dXp" detailTextLabel="iJG-TB-0Kh" style="IBUITableViewCellStyleValue1" id="a8U-E1-Mvc">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="1f8-PZ-dXp" detailTextLabel="iJG-TB-0Kh" style="IBUITableViewCellStyleValue1" id="a8U-E1-Mvc">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a8U-E1-Mvc" id="xxv-Be-Wc9">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1f8-PZ-dXp">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1f8-PZ-dXp">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iJG-TB-0Kh">
@@ -130,12 +128,6 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="P8U-pB-Bfd">
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="P8U-pB-Bfd" id="tCs-ZO-LTy">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -145,11 +137,17 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationItem key="navigationItem" title="Add Place" id="mDA-UH-19a">
+                        <barButtonItem key="rightBarButtonItem" title="Submit" style="done" id="eiW-IY-j9M">
+                            <connections>
+                                <action selector="onPlaceSubmit:" destination="A92-GP-Haj" id="5HC-lJ-Zdb"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LJ3-k4-kbK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4952" y="-758"/>
+            <point key="canvasLocation" x="4952" y="-752"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="ufC-wZ-h7g">
@@ -450,6 +448,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="b3h-aN-nGS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="barTintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
