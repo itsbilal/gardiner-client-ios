@@ -34,6 +34,9 @@ class PlacesListViewController: UITableViewController, UITableViewDataSource, UI
     
     override func viewDidAppear(animated: Bool) {
         RestApi.instance.request(.GET, endpoint: "user/myself", callback: { (request, response, json) -> Void in
+            
+            self.places.removeAll()
+            
             for place in json["places"] as [[String: AnyObject]] {
                 var placeObj:Place = Place()
                 placeObj.name = place["title"] as String
