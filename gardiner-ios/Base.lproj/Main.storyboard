@@ -399,7 +399,7 @@
         <scene sceneID="ztj-Tr-DC0">
             <objects>
                 <navigationController id="hwV-Ee-pHU" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" id="pP1-KN-t0R"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="tabbar_home" id="pP1-KN-t0R"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="JhT-hV-oqx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -464,4 +464,7 @@
             <point key="canvasLocation" x="3382" y="-752"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="tabbar_home" width="75" height="75"/>
+    </resources>
 </document>
