@@ -465,6 +465,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="tabbar_home" width="75" height="75"/>
+        <image name="tabbar_home" width="50" height="50"/>
     </resources>
 </document>
