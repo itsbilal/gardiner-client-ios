@@ -28,7 +28,12 @@ class HomeListCell: UITableViewCell {
     override func awakeFromNib(){
         super.awakeFromNib()
         
-        cardRectangle.layer.cornerRadius = 5
+        cardRectangle.layer.cornerRadius = 2
+        cardRectangle.layer.masksToBounds = false
+        cardRectangle.layer.shadowOffset = CGSizeMake(0, 1)
+        cardRectangle.layer.shadowRadius = 1
+        cardRectangle.layer.shadowOpacity = 0.3
+        
         profilePic.layer.cornerRadius = profilePic.frame.size.width / 2
         profilePic.clipsToBounds = true
         
