@@ -49,10 +49,10 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("homeListCell", forIndexPath: indexPath) as UITableViewCell
+        var cell:HomeListCell = tableView.dequeueReusableCellWithIdentifier("homeListCell", forIndexPath: indexPath) as HomeListCell
         var listItem:Contact = self.homeList[indexPath.row]
         
-        cell.textLabel.text = listItem.name
+        cell.nameLabel.text = listItem.name
         
         return cell
     }

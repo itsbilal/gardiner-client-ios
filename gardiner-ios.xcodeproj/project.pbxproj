@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C448B201A479F6700F4BF5F /* HomeListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C448B1F1A479F6700F4BF5F /* HomeListCell.swift */; };
 		9C4F92481A2537FF00F84200 /* PlacesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4F92471A2537FF00F84200 /* PlacesListViewController.swift */; };
 		9C52A31419C546A10067D349 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB8DA9A19B56A4F00E4C030 /* Alamofire.framework */; };
 		9C52A31619C546F50067D349 /* Alamofire.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9CB8DA9A19B56A4F00E4C030 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -69,6 +70,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9C448B1F1A479F6700F4BF5F /* HomeListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeListCell.swift; sourceTree = "<group>"; };
 		9C4F92471A2537FF00F84200 /* PlacesListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesListViewController.swift; sourceTree = "<group>"; };
 		9C7905F019C49AF8006649A3 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		9C86D49F19F4A45A00E3C30F /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				9C8861EA19C64FFA00943DB3 /* PersonLocationViewController.swift */,
 				9C86D49F19F4A45A00E3C30F /* ContactsViewController.swift */,
 				9C4F92471A2537FF00F84200 /* PlacesListViewController.swift */,
+				9C448B1F1A479F6700F4BF5F /* HomeListCell.swift */,
 			);
 			path = "gardiner-ios";
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				9C4F92481A2537FF00F84200 /* PlacesListViewController.swift in Sources */,
 				9C8861E619C5F51E00943DB3 /* Contact.swift in Sources */,
 				9CC6DF1319B73FCF0018A674 /* RestApi.swift in Sources */,
+				9C448B201A479F6700F4BF5F /* HomeListCell.swift in Sources */,
 				9CABA0711A3BFEE2000FDE21 /* NewPlaceViewController.swift in Sources */,
 				9CDB38171A3CE89D00F52A26 /* NewPlace2ViewController.swift in Sources */,
 				9C7905F119C49AF8006649A3 /* MainViewController.swift in Sources */,
