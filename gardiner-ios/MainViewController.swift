@@ -20,9 +20,6 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-        
-        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -52,7 +49,7 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
         var cell:HomeListCell = tableView.dequeueReusableCellWithIdentifier("homeListCell", forIndexPath: indexPath) as HomeListCell
         var listItem:Contact = self.homeList[indexPath.row]
         
-        cell.nameLabel.text = listItem.name
+        cell.setPerson(listItem)
         
         return cell
     }

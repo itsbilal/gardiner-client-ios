@@ -14,6 +14,7 @@ class HomeListCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var locationTypeLabel: UILabel!
     @IBOutlet weak var profilePic: UIImageView!
+    @IBOutlet weak var locationTypeImage: UIImageView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -44,6 +45,29 @@ class HomeListCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func setPerson(contact: Contact) {
+        nameLabel.text = contact.name
+        
+        if contact.at != nil {
+            switch contact.at!.uppercaseString {
+            case "HOME":
+                locationTypeLabel.text = "HOME"
+                locationTypeImage.image = UIImage(named: "tabbar_home")
+            case "SCHOOL":
+                locationTypeLabel.text = "SCHOOL"
+                locationTypeImage.image = UIImage(named: "locationtype_school")
+            default:
+                locationTypeLabel.text = "OUT"
+                locationTypeImage.image = UIImage(named: "locationtype_point")
+            }
+        } else {
+            locationTypeLabel.text = "OUT"
+            locationTypeImage.image = UIImage(named: "locationtype_point")
+        }
+        
+        // TODO: Get the person's profile pic and put it in profilePic
     }
 
 }

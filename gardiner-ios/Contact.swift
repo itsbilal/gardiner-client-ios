@@ -13,6 +13,7 @@ class Contact {
     var name: String = ""
     var location: String? = ""
     var email: String? = ""
+    var at:String? = ""
     
     lazy var requestId:String = ""
     
@@ -39,6 +40,7 @@ class Contact {
         contact.name        = rawContact["name"] as String
         contact.location    = rawContact["location"] as? String
         contact.email       = rawContact["email"] as? String
+        contact.at          = rawContact["at"] as? String
         
         if rawContact["locations"] != nil {
             var locations = rawContact["locations"] as NSArray
