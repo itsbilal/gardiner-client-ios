@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var locations: [CLRegion] = []
     
     func locationsUpdated() {
-        if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.Authorized || !CLLocationManager.isMonitoringAvailableForClass(CLCircularRegion) {
+        if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedAlways || !CLLocationManager.isMonitoringAvailableForClass(CLCircularRegion) {
             return
         }
         
@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status == CLAuthorizationStatus.Authorized {
+        if status == CLAuthorizationStatus.AuthorizedAlways {
             locationManager.startUpdatingLocation()
         } else {
             println("Authorization denied for location")

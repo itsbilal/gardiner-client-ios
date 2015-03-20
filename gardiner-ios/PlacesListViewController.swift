@@ -75,7 +75,7 @@ class PlacesListViewController: UITableViewController, UITableViewDataSource, UI
         var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("placeListCell", forIndexPath: indexPath) as UITableViewCell
 
         // Configure the cell...
-        cell.textLabel.text = places[indexPath.row].name
+        cell.textLabel?.text = places[indexPath.row].name
 
         return cell
     }

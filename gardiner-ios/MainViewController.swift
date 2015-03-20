@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Alamofire
 import CoreLocation
+import Locksmith
 
 class MainViewController: UITableViewController, CLLocationManagerDelegate {
     
@@ -24,9 +25,9 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        var sharedDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let (dictionary, key) = Locksmith.loadDataForUserAccount("main")
                 
-        if sharedDefaults.stringForKey("email") == nil {
+        if dictionary?["email"] == nil {
             println("doing segue")
             
             performSegueWithIdentifier("onLoginNeeded", sender: self)

@@ -19,7 +19,7 @@ class ContactsViewController: UIViewController, UITableViewDataSource, UITableVi
         func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
             var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("contactsSearchCell") as UITableViewCell
             var contact = searchContacts[indexPath.row]
-            cell.textLabel.text = contact.name
+            cell.textLabel?.text = contact.name
             
             return cell
         }
@@ -79,7 +79,7 @@ class ContactsViewController: UIViewController, UITableViewDataSource, UITableVi
         var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("requestsListCell") as UITableViewCell
         var contact:Contact = self.contacts[indexPath.row]
         
-        cell.textLabel.text = contact.name
+        cell.textLabel?.text = contact.name
         
         return cell
     }

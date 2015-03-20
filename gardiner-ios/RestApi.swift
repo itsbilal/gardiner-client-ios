@@ -8,6 +8,7 @@
 
 import Foundation
 import Alamofire
+import Locksmith
 
 let BASE_URL:String = "http://104.131.171.82:8080/"
 
@@ -30,16 +31,16 @@ class RestApi: NSObject {
     override init() {
         token = ""
         loggedIn = false
-        
-        var sharedDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        email = sharedDefaults.stringForKey("email")
-        password = sharedDefaults.stringForKey("password")
-        
         super.init()
-        
-        if email == nil || password == nil {
+
+        let (dictionary,error) = Locksmith.loadDataForUserAccount("main")
+        if dictionary?["email"] != nil {
+            email = dictionary?.valueForKey("email") as String!
+            password = dictionary?.valueForKey("passwd") as String!
+        } else {
             return
         }
+        
         
         request(Alamofire.Method.POST, endpoint: "user/login/", callback: {(request, response, json) in
                 if response?.statusCode != 200 || json.objectForKey("error") != nil {
@@ -114,10 +115,7 @@ class RestApi: NSObject {
     
     func setCredentials(email:String, password: String, onSuccess: () -> Void, onFailure: () -> Void) {
         
-        var sharedDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        sharedDefaults.setObject(email, forKey: "email")
-        sharedDefaults.setObject(password, forKey: "password")
-        sharedDefaults.synchronize()
+        Locksmith.saveData(["email":email, "passwd":password], forUserAccount: "main")
         
         self.email = email
         self.password = password
