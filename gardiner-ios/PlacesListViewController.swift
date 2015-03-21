@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class Place {
     var name:String = ""
@@ -80,6 +81,18 @@ class PlacesListViewController: UITableViewController, UITableViewDataSource, UI
         return cell
     }
     
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            RestApi.instance.request(.DELETE, endpoint: "user/myself/places/"+places[indexPath.row].id, callback: { (request, response, json) -> Void in
+                self.places.removeAtIndex(indexPath.row)
+                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            })
+        }
+    }
+    
+    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        return UITableViewCellEditingStyle.Delete
+    }
 
     /*
     // Override to support conditional editing of the table view.
