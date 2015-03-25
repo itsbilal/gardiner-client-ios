@@ -47,9 +47,17 @@ class ContactsViewController: UIViewController, UITableViewDataSource, UITableVi
             
             let contact:Contact = searchContacts[indexPath.row]
             
-            RestApi.instance.request(.POST, endpoint: "contacts/user/\(contact.id)/request", callback: { (request, response, json) -> Void in
-                tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            })
+            var alert:UIAlertController = UIAlertController(title: "Add this contact?", message: "Send request", preferredStyle: UIAlertControllerStyle.ActionSheet)
+            
+            var addAction:UIAlertAction = UIAlertAction(title: "Send request", style: UIAlertActionStyle.Default) { (alertAction) -> Void in
+                
+                RestApi.instance.request(.POST, endpoint: "contacts/user/\(contact.id)/request", callback: { (request, response, json) -> Void in
+                    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                })
+            }
+            alert.addAction(addAction)
+            
+            //self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     

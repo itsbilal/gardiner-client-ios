@@ -83,10 +83,14 @@ class PlacesListViewController: UITableViewController, UITableViewDataSource, UI
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete {
+            
             RestApi.instance.request(.DELETE, endpoint: "user/myself/places/"+places[indexPath.row].id, callback: { (request, response, json) -> Void in
                 self.places.removeAtIndex(indexPath.row)
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                return
             })
+            
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+
         }
     }
     
