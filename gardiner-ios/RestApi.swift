@@ -8,7 +8,6 @@
 
 import Foundation
 import Alamofire
-import Locksmith
 
 let BASE_URL:String = "http://104.131.171.82:8080/"
 
@@ -20,11 +19,22 @@ class RestApi: NSObject {
         return Static.instance
     }
     
+    
     var token: String
     var loggedIn: Bool
     
     var email: String!
     var password: String!
+    
+    
+    let protectionSpace:NSURLProtectionSpace = NSURLProtectionSpace(
+        host: "104.131.171.82",
+        port: 8080,
+        `protocol`: "http",
+        realm: nil,
+        authenticationMethod: NSURLAuthenticationMethodHTMLForm
+    )
+    var credStorage:NSURLCredentialStorage = NSURLCredentialStorage.sharedCredentialStorage()
     
     var onLoginCallbacks: [() -> Void] = []
     
@@ -32,11 +42,12 @@ class RestApi: NSObject {
         token = ""
         loggedIn = false
         super.init()
+        
+        var creds:NSURLCredential? = credStorage.defaultCredentialForProtectionSpace(protectionSpace)
 
-        let (dictionary,error) = Locksmith.loadDataForUserAccount("main")
-        if dictionary?["email"] != nil {
-            email = dictionary?.valueForKey("email") as String!
-            password = dictionary?.valueForKey("passwd") as String!
+        if creds != nil {
+            email = creds?.user
+            password = creds?.password
         } else {
             return
         }
@@ -51,10 +62,10 @@ class RestApi: NSObject {
                     self.password = nil
                     
                 } else {
-                    var token:String = json["token"] as String
-                    self.setToken(token)
+                    var token:String = json["token"] as! String
+                    self.setSessionToken(token)
                 }
-                
+            
                 println(json)
             }, parameters: ["email": email, "password": password])
     }
@@ -76,7 +87,7 @@ class RestApi: NSObject {
                     return
                 }
                 
-                var json:NSDictionary = data as NSDictionary;
+                var json:NSDictionary = data as! NSDictionary
                 
                 if json["error"] != nil {
                     return
@@ -93,9 +104,9 @@ class RestApi: NSObject {
                         self.logout()
                         
                         Alamofire.request(Alamofire.Method.POST, BASE_URL+"user/login/", parameters: ["email": self.email, "password": self.password], encoding: Alamofire.ParameterEncoding.URL)
-                            .responseJSON({ (URLrequest2, URLresponse2, data2, error2) -> Void in
-                                var json2:NSDictionary = data2 as NSDictionary
-                                self.setToken(json2["token"] as String)
+                            .responseJSON(completionHandler: { (URLrequest2, URLresponse2, data2, error2) -> Void in
+                                var json2:NSDictionary = data2 as! NSDictionary
+                                self.setSessionToken(json2["token"] as! String)
                                 
                                 self.request(method, endpoint: endpoint, callback: callback, parameters: parameters)
                             })
@@ -115,7 +126,8 @@ class RestApi: NSObject {
     
     func setCredentials(email:String, password: String, onSuccess: () -> Void, onFailure: () -> Void) {
         
-        Locksmith.saveData(["email":email, "passwd":password], forUserAccount: "main")
+        var creds = NSURLCredential(user: email, password: password, persistence: NSURLCredentialPersistence.Permanent)
+        self.credStorage.setDefaultCredential(creds, forProtectionSpace: protectionSpace)
         
         self.email = email
         self.password = password
@@ -130,8 +142,8 @@ class RestApi: NSObject {
                 
                 onFailure()
             } else {
-                var token:String = json["token"] as String
-                self.setToken(token)
+                var token:String = json["token"] as! String
+                self.setSessionToken(token)
                 
                 onSuccess()
             }
@@ -140,7 +152,7 @@ class RestApi: NSObject {
         }, parameters: ["email": email, "password": password])
     }
     
-    func setToken(token:String) {
+    func setSessionToken(token:String) {
         self.loggedIn = true
         self.token = token
         

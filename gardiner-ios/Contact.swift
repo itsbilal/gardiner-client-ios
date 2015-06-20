@@ -23,8 +23,8 @@ class Contact {
         var list:[Contact] = []
         
         if rawdata["users"] != nil {
-            for object in (rawdata["users"] as NSArray) {
-                var contact:Contact = parseJson(object as NSDictionary)
+            for object in (rawdata["users"] as! NSArray) {
+                var contact:Contact = parseJson(object as! NSDictionary)
                 
                 list.append(contact)
             }
@@ -36,23 +36,23 @@ class Contact {
     class func parseJson(rawContact: NSDictionary) -> Contact {
         var contact:Contact = Contact()
         
-        contact.id          = rawContact["id"] as String
-        contact.name        = rawContact["name"] as String
+        contact.id          = rawContact["id"] as! String
+        contact.name        = rawContact["name"] as! String
         contact.location    = rawContact["location"] as? String
         contact.email       = rawContact["email"] as? String
         contact.at          = rawContact["at"] as? String
         
         if rawContact["locations"] != nil {
-            var locations = rawContact["locations"] as NSArray
+            var locations = rawContact["locations"] as! NSArray
             
             for rawLocation in locations{
-                var location:NSDictionary = rawLocation as NSDictionary
+                var location:NSDictionary = rawLocation as! NSDictionary
                 if location["latX"] == nil {
                     continue
                 }
                 
-                contact.locations.append(["latX": location["latX"] as Double,
-                    "latY": location["latY"] as Double])
+                contact.locations.append(["latX": location["latX"] as! Double,
+                    "latY": location["latY"] as! Double])
             }
         }
         

@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import Alamofire
 import CoreLocation
-import Locksmith
 
 class MainViewController: UITableViewController, CLLocationManagerDelegate {
     
@@ -25,9 +24,10 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        let (dictionary, key) = Locksmith.loadDataForUserAccount("main")
+        
+        var creds = RestApi.instance.credStorage.defaultCredentialForProtectionSpace(RestApi.instance.protectionSpace)
                 
-        if dictionary?["email"] == nil {
+        if creds == nil {
             println("doing segue")
             
             performSegueWithIdentifier("onLoginNeeded", sender: self)
@@ -47,7 +47,7 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:HomeListCell = tableView.dequeueReusableCellWithIdentifier("homeListCell", forIndexPath: indexPath) as HomeListCell
+        var cell:HomeListCell = tableView.dequeueReusableCellWithIdentifier("homeListCell", forIndexPath: indexPath) as! HomeListCell
         var listItem:Contact = self.homeList[indexPath.row]
         
         cell.setPerson(listItem)
@@ -68,7 +68,7 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "homeListDetail" {
-            (segue.destinationViewController as PersonLocationViewController).contact = sender as Contact
+            (segue.destinationViewController as! PersonLocationViewController).contact = sender as! Contact
         }
     }
     
@@ -81,14 +81,14 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
         })
         
         RestApi.instance.request(.GET, endpoint: "user/myself", callback: { (request, response, json) -> Void in
-            for place in json["places"] as [ NSDictionary ] {
-                var latitude:Double     = place["latX"] as Double
-                var longitude:Double    = place["latY"] as Double
-                var identifier:String   = place["id"] as String
+            for place in json["places"] as! [ NSDictionary ] {
+                var latitude:Double     = place["latX"] as! Double
+                var longitude:Double    = place["latY"] as! Double
+                var identifier:String   = place["id"] as! String
                 
                 var region:CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(latitude, longitude), radius: 100, identifier: identifier)
                 
-                let appDel:AppDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+                let appDel:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
                 
                 appDel.locations.append(region)
                 appDel.locationsUpdated()

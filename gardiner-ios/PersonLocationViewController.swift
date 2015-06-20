@@ -51,7 +51,7 @@ class PersonLocationViewController: UIViewController {
         var annotation:MKPointAnnotation = MKPointAnnotation()
         var coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!)
         
-        annotation.setCoordinate(coordinate)
+        annotation.coordinate = coordinate
         annotation.title = contact.name
         annotation.subtitle = "Location"
         

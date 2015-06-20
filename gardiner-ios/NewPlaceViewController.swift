@@ -60,7 +60,7 @@ class NewPlaceViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        (segue.destinationViewController as NewPlace2ViewController).location = self.currentSelectedCoordinate
+        (segue.destinationViewController as! NewPlace2ViewController).location = self.currentSelectedCoordinate
     }
     
 

@@ -17,7 +17,7 @@ class ContactsViewController: UIViewController, UITableViewDataSource, UITableVi
         var searchContacts:[Contact] = []
         
         func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-            var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("contactsSearchCell") as UITableViewCell
+            var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("contactsSearchCell") as! UITableViewCell
             var contact = searchContacts[indexPath.row]
             cell.textLabel?.text = contact.name
             
@@ -84,7 +84,7 @@ class ContactsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("requestsListCell") as UITableViewCell
+        var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("requestsListCell") as! UITableViewCell
         var contact:Contact = self.contacts[indexPath.row]
         
         cell.textLabel?.text = contact.name
@@ -108,9 +108,9 @@ class ContactsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func refresh() {
         RestApi.instance.request(.GET, endpoint: "contacts/requests", callback: { (request, response, json) -> Void in
-            for request in json["requests"] as NSArray {
-                var contact:Contact = Contact.parseJson(request["from"] as NSDictionary)
-                contact.requestId = request["id"] as String
+            for request in json["requests"] as! NSArray {
+                var contact:Contact = Contact.parseJson(request["from"] as! NSDictionary)
+                contact.requestId = request["id"] as! String
                 
                 self.contacts.append(contact)
             }

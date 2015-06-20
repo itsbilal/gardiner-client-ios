@@ -38,12 +38,12 @@ class PlacesListViewController: UITableViewController, UITableViewDataSource, UI
             
             self.places.removeAll()
             
-            for place in json["places"] as [[String: AnyObject]] {
+            for place in json["places"] as! [[String: AnyObject]] {
                 var placeObj:Place = Place()
-                placeObj.name = place["title"] as String
-                placeObj.id = place["id"] as String
-                placeObj.latitude = place["latX"] as Double
-                placeObj.longitude = place["latY"] as Double
+                placeObj.name = place["title"] as! String
+                placeObj.id = place["id"]as! String
+                placeObj.latitude = place["latX"] as! Double
+                placeObj.longitude = place["latY"] as! Double
                 
                 self.places.append(placeObj)
             }
@@ -73,7 +73,7 @@ class PlacesListViewController: UITableViewController, UITableViewDataSource, UI
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("placeListCell", forIndexPath: indexPath) as UITableViewCell
+        var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("placeListCell", forIndexPath: indexPath) as! UITableViewCell
 
         // Configure the cell...
         cell.textLabel?.text = places[indexPath.row].name
@@ -88,7 +88,6 @@ class PlacesListViewController: UITableViewController, UITableViewDataSource, UI
                 self.places.removeAtIndex(indexPath.row)
                 return
             })
-            
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
 
         }
