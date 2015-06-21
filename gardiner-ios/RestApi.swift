@@ -79,9 +79,14 @@ class RestApi: NSObject {
     }
     
     // Wrapper for the Alamofire.request function that does our own error handling
-    func request(method: Alamofire.Method, endpoint: String, callback: (NSURLRequest, NSHTTPURLResponse?, NSDictionary) -> Void, parameters: Dictionary<String, String> = [String:String]()) {
+    func request(method: Alamofire.Method, endpoint: String, callback: (NSURLRequest, NSHTTPURLResponse?, NSDictionary) -> Void, parameters: [String:AnyObject] = [:]) {
         
-        Alamofire.request(method, BASE_URL + endpoint, parameters: parameters, encoding: .URL)
+        var encoding:ParameterEncoding = .URL
+        if method == .POST {
+            encoding = .JSON
+        }
+        
+        Alamofire.request(method, BASE_URL + endpoint, parameters: parameters, encoding: encoding)
             .responseJSON { (URLrequest, response, data, error) -> Void in
                 if error != nil {
                     return
@@ -90,6 +95,7 @@ class RestApi: NSObject {
                 var json:NSDictionary = data as! NSDictionary
                 
                 if json["error"] != nil {
+                    println(json["error"])
                     return
                 }
                 
@@ -103,7 +109,7 @@ class RestApi: NSObject {
                         println("Relogin time!")
                         self.logout()
                         
-                        Alamofire.request(Alamofire.Method.POST, BASE_URL+"user/login/", parameters: ["email": self.email, "password": self.password], encoding: Alamofire.ParameterEncoding.URL)
+                        Alamofire.request(Alamofire.Method.POST, BASE_URL+"user/login/", parameters: ["email": self.email, "password": self.password], encoding: Alamofire.ParameterEncoding.JSON)
                             .responseJSON(completionHandler: { (URLrequest2, URLresponse2, data2, error2) -> Void in
                                 var json2:NSDictionary = data2 as! NSDictionary
                                 self.setSessionToken(json2["token"] as! String)

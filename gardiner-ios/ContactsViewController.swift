@@ -7,13 +7,16 @@
 //
 
 import UIKit
+import AddressBook
+import Alamofire
 
-class ContactsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ContactsViewController: UITableViewController {
     
+    var requests:[Contact] = []
+    var otherContacts:[Contact] = []
     var contacts:[Contact] = []
     
-    @IBOutlet weak var tableView: UITableView!
-    class ContactsSearchDelegate: NSObject, UITableViewDataSource, UISearchDisplayDelegate, UITableViewDelegate {
+    /*class ContactsSearchDelegate: NSObject, UITableViewDataSource, UISearchDisplayDelegate, UITableViewDelegate {
         var searchContacts:[Contact] = []
         
         func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -28,7 +31,7 @@ class ContactsViewController: UIViewController, UITableViewDataSource, UITableVi
             return searchContacts.count
         }
         
-        func searchDisplayController(controller: UISearchDisplayController, didLoadSearchResultsTableView tableView: UITableView) {
+        /*func searchDisplayController(controller: UISearchDisplayController, didLoadSearchResultsTableView tableView: UITableView) {
             tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "contactsSearchCell")
         }
         
@@ -40,7 +43,7 @@ class ContactsViewController: UIViewController, UITableViewDataSource, UITableVi
             }, parameters: ["name":searchString])
             
             return false
-        }
+        }*/
         
         func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
             println("Selected \(searchContacts[indexPath.row].name) in search results")
@@ -59,23 +62,63 @@ class ContactsViewController: UIViewController, UITableViewDataSource, UITableVi
             
             //self.presentViewController(alert, animated: true, completion: nil)
         }
+    }*/
+    
+    func checkContacts(addressBook: ABAddressBook) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            let contacts = ABAddressBookCopyArrayOfAllPeople(addressBook).takeRetainedValue() as NSArray as [ABRecord]
+            var phoneNumbers:[String] = []
+            
+            for contact in contacts {
+                
+                if ABRecordGetRecordType(contact) == UInt32(kABPersonType)  {
+                    let phoneNumberProperty:ABMultiValueRef = ABRecordCopyValue(contact, kABPersonPhoneProperty).takeRetainedValue() as ABMultiValueRef
+                    
+                    let phoneNumberValues:[String] = ABMultiValueCopyArrayOfAllValues(phoneNumberProperty).takeUnretainedValue() as NSArray as! [String]
+                    
+                    for phoneNumber in phoneNumberValues {
+                        //println(phoneNumber)
+                        phoneNumbers.append(phoneNumber)
+                    }
+                }
+            }
+            
+            if phoneNumbers.count == 0 {
+                return
+            }
+            
+            RestApi.instance.request(Alamofire.Method.POST, endpoint: "contacts/search", callback: { (request, response, json) -> Void in
+                self.otherContacts = Contact.parseList(json)
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.tableView.reloadData()
+                }
+                
+            }, parameters: ["phoneNumbers": phoneNumbers])
+        }
+        
     }
     
-    var contactSearchDelegate:ContactsSearchDelegate = ContactsSearchDelegate()
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        
-        self.searchDisplayController?.delegate = contactSearchDelegate
-        self.searchDisplayController?.searchResultsDataSource = contactSearchDelegate
-        self.searchDisplayController?.searchResultsDelegate = contactSearchDelegate
 
         // Do any additional setup after loading the view.
-        
         refresh()
+
+        var error:Unmanaged<CFError>? = nil
+        var addressBook:ABAddressBook = ABAddressBookCreateWithOptions(nil, &error).takeRetainedValue()
+        var authStatus = ABAddressBookGetAuthorizationStatus()
+        if authStatus == ABAuthorizationStatus.NotDetermined {
+            
+            ABAddressBookRequestAccessWithCompletion(addressBook, { (granted, error) -> Void in
+                if granted == true {
+                    self.checkContacts(addressBook)
+                }
+            })
+        } else if authStatus == ABAuthorizationStatus.Authorized {
+            checkContacts(addressBook)
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -83,22 +126,50 @@ class ContactsViewController: UIViewController, UITableViewDataSource, UITableVi
         // Dispose of any resources that can be recreated.
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("requestsListCell") as! UITableViewCell
-        var contact:Contact = self.contacts[indexPath.row]
+        var contact:Contact?
+        if indexPath.section == 0 {
+            contact = self.requests[indexPath.row]
+        } else {
+            contact = self.otherContacts[indexPath.row]
+        }
         
-        cell.textLabel?.text = contact.name
+        cell.textLabel?.text = contact!.name
         
         return cell
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return contacts.count
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
+    }
+        
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            // Requests
+            return requests.count
+        } else if section == 1 {
+            // Other contacts
+            return otherContacts.count
+        }
+        
+        return 1
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let contact:Contact = self.contacts[indexPath.row]
-        self.contacts.removeAtIndex(indexPath.row)
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "Requests"
+        case 1:
+            return "Other contacts on Gardiner"
+        default:
+            return "Unknown"
+        }
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let contact:Contact = self.requests[indexPath.row]
+        self.requests.removeAtIndex(indexPath.row)
         tableView.reloadData()
         
         RestApi.instance.request(.POST, endpoint: "contacts/requests/\(contact.requestId)/respond", callback: { (request, response, json) -> Void in
@@ -112,7 +183,7 @@ class ContactsViewController: UIViewController, UITableViewDataSource, UITableVi
                 var contact:Contact = Contact.parseJson(request["from"] as! NSDictionary)
                 contact.requestId = request["id"] as! String
                 
-                self.contacts.append(contact)
+                self.requests.append(contact)
             }
             
             self.tableView.reloadData()
