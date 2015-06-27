@@ -7,9 +7,36 @@
 //
 
 import Foundation
-import Alamofire
 
 let BASE_URL:String = "http://104.131.171.82:8080/"
+
+enum Method : Printable {
+    case GET
+    case POST
+    case PUT
+    case DELETE
+    
+    var description:String {
+        switch self {
+        case .GET: return "GET";
+        case .POST: return "POST";
+        case .PUT: return "PUT";
+        case .DELETE: return "DELETE";
+        }
+    }
+}
+
+enum ParameterEncoding {
+    case URL
+    case JSON
+    
+    var mimeType:String {
+        switch self {
+        case .URL: return "application/x-www-form-urlencoded";
+        case .JSON: return "application/json";
+        }
+    }
+}
 
 class RestApi: NSObject {
     class var instance: RestApi {
@@ -18,7 +45,6 @@ class RestApi: NSObject {
         }
         return Static.instance
     }
-    
     
     var token: String
     var loggedIn: Bool
@@ -53,7 +79,7 @@ class RestApi: NSObject {
         }
         
         
-        request(Alamofire.Method.POST, endpoint: "user/login/", callback: {(request, response, json) in
+        request(Method.POST, endpoint: "user/login/", parameters: ["email": email, "password": password]) {(request, response, json) in
                 if response?.statusCode != 200 || json.objectForKey("error") != nil {
                     self.logout()
                     println("Invalid credentials")
@@ -67,7 +93,7 @@ class RestApi: NSObject {
                 }
             
                 println(json)
-            }, parameters: ["email": email, "password": password])
+            }
     }
     
     func onLogin(callback: () -> Void) {
@@ -79,55 +105,92 @@ class RestApi: NSObject {
     }
     
     // Wrapper for the Alamofire.request function that does our own error handling
-    func request(method: Alamofire.Method, endpoint: String, callback: (NSURLRequest, NSHTTPURLResponse?, NSDictionary) -> Void, parameters: [String:AnyObject] = [:]) {
+    func request(method: Method, endpoint: String, parameters: [String:AnyObject] = [:], callback: ((NSURLRequest, NSHTTPURLResponse?, NSDictionary) -> Void)? = nil ) {
         
         var encoding:ParameterEncoding = .URL
         if method == .POST {
             encoding = .JSON
         }
         
-        Alamofire.request(method, BASE_URL + endpoint, parameters: parameters, encoding: encoding)
-            .responseJSON { (URLrequest, response, data, error) -> Void in
-                if error != nil {
+        let url:NSURL = NSURL(string: BASE_URL + endpoint)!
+        var urlRequest:NSMutableURLRequest = NSMutableURLRequest(URL: url)
+        urlRequest.HTTPMethod = method.description
+        urlRequest.setValue(encoding.mimeType, forHTTPHeaderField: "Content-Type")
+    
+        if loggedIn && !token.isEmpty {
+            urlRequest.setValue(token, forHTTPHeaderField: "X-WWW-Authenticate")
+        }
+        
+        var requestBody:NSData?
+        if parameters.count > 0 {
+            if encoding == .JSON {
+                var error:NSError?
+                requestBody = NSJSONSerialization.dataWithJSONObject(parameters, options: nil, error: &error)
+                if (error != nil) {
                     return
                 }
-                
-                var json:NSDictionary = data as! NSDictionary
-                
-                if json["error"] != nil {
-                    println(json["error"])
-                    return
+            } else {
+                var requestString:String = ""
+                for (key, value) in parameters as! [String:String] {
+                    requestString += "\(key)=\(value)&"
                 }
-                
-                println(json)
-                
-                if response?.statusCode == 200 && json.objectForKey("error") == nil {
-                    callback(URLrequest, response, json)
-                } else if json.objectForKey("error") != nil {
-                    if (json.objectForKey("code") as? Int) == 1000 && self.email != nil {
-                        // Relogin
-                        println("Relogin time!")
-                        self.logout()
-                        
-                        Alamofire.request(Alamofire.Method.POST, BASE_URL+"user/login/", parameters: ["email": self.email, "password": self.password], encoding: Alamofire.ParameterEncoding.JSON)
-                            .responseJSON(completionHandler: { (URLrequest2, URLresponse2, data2, error2) -> Void in
-                                var json2:NSDictionary = data2 as! NSDictionary
-                                self.setSessionToken(json2["token"] as! String)
-                                
-                                self.request(method, endpoint: endpoint, callback: callback, parameters: parameters)
-                            })
-                        
-                        
-                    } else {
-                        // TODO: Error handling
-                        println("Error occurred")
-                        println(json["error"])
-                    }
+                requestString = requestString.substringToIndex(advance(requestString.endIndex, -1))
+                requestBody = requestString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+            }
+            urlRequest.HTTPBody = requestBody!
+        }
+        
+        let session:NSURLSession = NSURLSession.sharedSession()
+        let sessionTask:NSURLSessionDataTask = session.dataTaskWithRequest(urlRequest, completionHandler: { (rawdata, response, error) -> Void in
+            
+            if error != nil {
+                println(error)
+                return
+            }
+            
+            var jsonReadError: NSError?
+            var json:NSDictionary = NSJSONSerialization.JSONObjectWithData(rawdata, options: nil, error: &jsonReadError) as! NSDictionary
+            
+            println(json)
+
+            if jsonReadError != nil {
+                println(error)
+                return
+            }
+            
+            if json["error"] != nil {
+                println(json["error"])
+                return
+            }
+            
+            
+            if (response as! NSHTTPURLResponse).statusCode == 200 && json.objectForKey("error") == nil {
+                callback?(urlRequest, response as? NSHTTPURLResponse, json)
+            } else if json.objectForKey("error") != nil {
+                if (json.objectForKey("code") as? Int) == 1000 && self.email != nil {
+                    // Relogin
+                    println("Relogin time!")
+                    self.logout()
+                    
+                    self.request(.POST, endpoint: "user/login/", parameters: ["email": self.email, "password": self.password]) { (URLrequest2, URLresponse2, data2) -> Void in
+                            var json2:NSDictionary = data2
+                            self.setSessionToken(json2["token"] as! String)
+                            
+                            self.request(method, endpoint: endpoint, parameters: parameters, callback: callback)
+                        }
+                    
+                    
                 } else {
                     // TODO: Error handling
-                    println("Unknown error occurred")
+                    println("Error occurred")
+                    println(json["error"])
                 }
+            } else {
+                // TODO: Error handling
+                println("Unknown error occurred")
             }
+        })
+        sessionTask.resume()
     }
     
     func setCredentials(email:String, password: String, onSuccess: () -> Void, onFailure: () -> Void) {
@@ -138,7 +201,7 @@ class RestApi: NSObject {
         self.email = email
         self.password = password
         
-        request(Alamofire.Method.POST, endpoint: "user/login/", callback: {(request, response, json) in
+        request(.POST, endpoint: "user/login/", parameters: ["email": email, "password": password]) {(request, response, json) in
             if response?.statusCode != 200 || json.objectForKey("error") != nil {
                 self.logout()
                 println("Invalid credentials")
@@ -155,14 +218,12 @@ class RestApi: NSObject {
             }
             
             println(json)
-        }, parameters: ["email": email, "password": password])
+        }
     }
     
     func setSessionToken(token:String) {
         self.loggedIn = true
         self.token = token
-        
-        Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders?["X-WWW-Authenticate"] = self.token
         
         for callback in onLoginCallbacks {
             callback()
@@ -174,7 +235,5 @@ class RestApi: NSObject {
     func logout() {
         self.loggedIn = false
         self.token = ""
-        
-        Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders?.removeValueForKey("X-WWW-Authenticate")
     }
 }

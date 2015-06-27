@@ -8,7 +8,6 @@
 
 import UIKit
 import AddressBook
-import Alamofire
 
 class ContactsViewController: UITableViewController {
     
@@ -87,14 +86,14 @@ class ContactsViewController: UITableViewController {
                 return
             }
             
-            RestApi.instance.request(Alamofire.Method.POST, endpoint: "contacts/search", callback: { (request, response, json) -> Void in
+            RestApi.instance.request(.POST, endpoint: "contacts/search", parameters: ["phoneNumbers": phoneNumbers]) { (request, response, json) -> Void in
                 self.otherContacts = Contact.parseList(json)
                 
                 dispatch_async(dispatch_get_main_queue()) {
                     self.tableView.reloadData()
                 }
                 
-            }, parameters: ["phoneNumbers": phoneNumbers])
+            }
         }
         
     }
@@ -172,9 +171,7 @@ class ContactsViewController: UITableViewController {
         self.requests.removeAtIndex(indexPath.row)
         tableView.reloadData()
         
-        RestApi.instance.request(.POST, endpoint: "contacts/requests/\(contact.requestId)/respond", callback: { (request, response, json) -> Void in
-            
-        }, parameters: ["response":"1"])
+        RestApi.instance.request(.POST, endpoint: "contacts/requests/\(contact.requestId)/respond", parameters: ["response":"1"])
     }
     
     func refresh() {

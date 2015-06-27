@@ -38,17 +38,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
         println("Entered region \(region.identifier)")
         
-        RestApi.instance.request(.POST, endpoint: "locations/enter", callback: { (request, response, json) -> Void in
+        RestApi.instance.request(.POST, endpoint: "locations/enter", parameters: ["id": region.identifier]) { (request, response, json) -> Void in
             // Probably do something
-        }, parameters: ["id": region.identifier])
+        }
     }
     
     func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
         println("Exited region \(region.identifier)")
         
-        RestApi.instance.request(.POST, endpoint: "locations/leave", callback: { (request, response, json) -> Void in
+        RestApi.instance.request(.POST, endpoint: "locations/leave", parameters: ["id": region.identifier]) { (request, response, json) -> Void in
             // Probably do something
-        }, parameters: ["id": region.identifier])
+        }
     }
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
@@ -70,13 +70,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         RestApi.instance.onLogin {() -> Void in
             
-            RestApi.instance.request(.POST, endpoint: "locations/new", callback: { (request, response, json) -> Void in
+            RestApi.instance.request(.POST, endpoint: "locations/new", parameters: parameters) { (request, response, json) -> Void in
                 
                 if json["success"] as? Int == 1 {
                     println("Location updated successfully")
                 }
                 
-            }, parameters: parameters)
+            }
             
         }
         

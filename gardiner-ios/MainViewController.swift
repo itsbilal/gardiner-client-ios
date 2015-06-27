@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import Alamofire
 import CoreLocation
 
 class MainViewController: UITableViewController, CLLocationManagerDelegate {

@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreLocation
-import Alamofire
 
 class NewPlace2ViewController: UITableViewController {
     
@@ -31,13 +30,13 @@ class NewPlace2ViewController: UITableViewController {
         
         var parameters:[String:String] = ["title": titleTextField.text, "latX": String(format: "%f", location!.latitude), "latY": String(format: "%f", location!.longitude)]
         
-        RestApi.instance.request(Alamofire.Method.POST, endpoint: "user/myself/places/", callback: { (request, response, json) -> Void in
+        RestApi.instance.request(.POST, endpoint: "user/myself/places/", parameters: parameters) { (request, response, json) -> Void in
             
             if json["success"] as? Int == 1 {
                 self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
             }
             
-        }, parameters: parameters)
+        }
         
     }
 
