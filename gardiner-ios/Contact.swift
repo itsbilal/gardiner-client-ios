@@ -58,4 +58,8 @@ class Contact {
         
         return contact
     }
+    
+    func request() {
+        RestApi.instance.request(.POST, endpoint: "contacts/user/\(self.id)/request")
+    }
 }

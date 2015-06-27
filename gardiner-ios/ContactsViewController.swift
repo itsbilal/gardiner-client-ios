@@ -167,11 +167,28 @@ class ContactsViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let contact:Contact = self.requests[indexPath.row]
-        self.requests.removeAtIndex(indexPath.row)
-        tableView.reloadData()
-        
-        RestApi.instance.request(.POST, endpoint: "contacts/requests/\(contact.requestId)/respond", parameters: ["response":"1"])
+        switch indexPath.section {
+        case 0:
+            let contact:Contact = self.requests[indexPath.row]
+            self.requests.removeAtIndex(indexPath.row)
+            tableView.reloadData()
+            
+            RestApi.instance.request(.POST, endpoint: "contacts/requests/\(contact.requestId)/respond", parameters: ["response":"1"])
+        case 1:
+            let contact:Contact = self.otherContacts[indexPath.row]
+            var confirmer:UIAlertController = UIAlertController(title: "Request", message: "Are you sure you want to send a contact request to \(contact.name)?", preferredStyle: UIAlertControllerStyle.Alert)
+            confirmer.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                contact.request()
+                confirmer.dismissViewControllerAnimated(true, completion: nil)
+            }))
+            confirmer.addAction(UIAlertAction(title: "No", style: .Cancel, handler: { (action) -> Void in
+                confirmer.dismissViewControllerAnimated(true, completion: nil)
+            }))
+            self.presentViewController(confirmer, animated: true, completion: nil)
+        default:
+            break
+        }
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func refresh() {
