@@ -10,7 +10,7 @@ import Foundation
 
 let BASE_URL:String = "http://104.131.171.82:8080/"
 
-enum Method : Printable {
+enum Method : CustomStringConvertible {
     case GET
     case POST
     case PUT
@@ -69,7 +69,7 @@ class RestApi: NSObject {
         loggedIn = false
         super.init()
         
-        var creds:NSURLCredential? = credStorage.defaultCredentialForProtectionSpace(protectionSpace)
+        let creds:NSURLCredential? = credStorage.defaultCredentialForProtectionSpace(protectionSpace)
 
         if creds != nil {
             email = creds?.user
@@ -82,17 +82,17 @@ class RestApi: NSObject {
         request(Method.POST, endpoint: "user/login/", parameters: ["email": email, "password": password]) {(request, response, json) in
                 if response?.statusCode != 200 || json.objectForKey("error") != nil {
                     self.logout()
-                    println("Invalid credentials")
+                    print("Invalid credentials")
                     
                     self.email = nil
                     self.password = nil
                     
                 } else {
-                    var token:String = json["token"] as! String
+                    let token:String = json["token"] as! String
                     self.setSessionToken(token)
                 }
             
-                println(json)
+                print(json)
             }
     }
     
@@ -125,7 +125,12 @@ class RestApi: NSObject {
         if parameters.count > 0 {
             if encoding == .JSON {
                 var error:NSError?
-                requestBody = NSJSONSerialization.dataWithJSONObject(parameters, options: nil, error: &error)
+                do {
+                    requestBody = try NSJSONSerialization.dataWithJSONObject(parameters, options: [])
+                } catch var error1 as NSError {
+                    error = error1
+                    requestBody = nil
+                }
                 if (error != nil) {
                     return
                 }
@@ -134,7 +139,7 @@ class RestApi: NSObject {
                 for (key, value) in parameters as! [String:String] {
                     requestString += "\(key)=\(value)&"
                 }
-                requestString = requestString.substringToIndex(advance(requestString.endIndex, -1))
+                requestString = requestString.substringToIndex(requestString.endIndex.advancedBy(-1))
                 requestBody = requestString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
             }
             urlRequest.HTTPBody = requestBody!
@@ -144,22 +149,22 @@ class RestApi: NSObject {
         let sessionTask:NSURLSessionDataTask = session.dataTaskWithRequest(urlRequest, completionHandler: { (rawdata, response, error) -> Void in
             
             if error != nil {
-                println(error)
+                print(error)
                 return
             }
             
             var jsonReadError: NSError?
-            var json:NSDictionary = NSJSONSerialization.JSONObjectWithData(rawdata, options: nil, error: &jsonReadError) as! NSDictionary
+            let json:NSDictionary = (try! NSJSONSerialization.JSONObjectWithData(rawdata!, options: [])) as! NSDictionary
             
-            println(json)
+            print(json)
 
             if jsonReadError != nil {
-                println(error)
+                print(error)
                 return
             }
             
             if json["error"] != nil {
-                println(json["error"])
+                print(json["error"])
                 return
             }
             
@@ -169,7 +174,7 @@ class RestApi: NSObject {
             } else if json.objectForKey("error") != nil {
                 if (json.objectForKey("code") as? Int) == 1000 && self.email != nil {
                     // Relogin
-                    println("Relogin time!")
+                    print("Relogin time!")
                     self.logout()
                     
                     self.request(.POST, endpoint: "user/login/", parameters: ["email": self.email, "password": self.password]) { (URLrequest2, URLresponse2, data2) -> Void in
@@ -182,12 +187,12 @@ class RestApi: NSObject {
                     
                 } else {
                     // TODO: Error handling
-                    println("Error occurred")
-                    println(json["error"])
+                    print("Error occurred")
+                    print(json["error"])
                 }
             } else {
                 // TODO: Error handling
-                println("Unknown error occurred")
+                print("Unknown error occurred")
             }
         })
         sessionTask.resume()
@@ -195,7 +200,7 @@ class RestApi: NSObject {
     
     func setCredentials(email:String, password: String, onSuccess: () -> Void, onFailure: () -> Void) {
         
-        var creds = NSURLCredential(user: email, password: password, persistence: NSURLCredentialPersistence.Permanent)
+        let creds = NSURLCredential(user: email, password: password, persistence: NSURLCredentialPersistence.Permanent)
         self.credStorage.setDefaultCredential(creds, forProtectionSpace: protectionSpace)
         
         self.email = email
@@ -204,20 +209,20 @@ class RestApi: NSObject {
         request(.POST, endpoint: "user/login/", parameters: ["email": email, "password": password]) {(request, response, json) in
             if response?.statusCode != 200 || json.objectForKey("error") != nil {
                 self.logout()
-                println("Invalid credentials")
+                print("Invalid credentials")
                 
                 self.email = nil
                 self.password = nil
                 
                 onFailure()
             } else {
-                var token:String = json["token"] as! String
+                let token:String = json["token"] as! String
                 self.setSessionToken(token)
                 
                 onSuccess()
             }
             
-            println(json)
+            print(json)
         }
     }
     

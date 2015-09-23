@@ -27,33 +27,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == CLAuthorizationStatus.AuthorizedAlways {
             locationManager.startUpdatingLocation()
         } else {
-            println("Authorization denied for location")
+            print("Authorization denied for location")
         }
     }
     
-    func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
-        println("Entered region \(region.identifier)")
+    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("Entered region \(region.identifier)")
         
         RestApi.instance.request(.POST, endpoint: "locations/enter", parameters: ["id": region.identifier]) { (request, response, json) -> Void in
             // Probably do something
         }
     }
     
-    func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
-        println("Exited region \(region.identifier)")
+    func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
+        print("Exited region \(region.identifier)")
         
         RestApi.instance.request(.POST, endpoint: "locations/leave", parameters: ["id": region.identifier]) { (request, response, json) -> Void in
             // Probably do something
         }
     }
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        println("Received location update")
-        var location:CLLocation = locations.last as! CLLocation
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("Received location update")
+        let location:CLLocation = locations.last!
         locationManager.stopUpdatingLocation()
         
         var parameters:[String:String] = [
@@ -73,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             RestApi.instance.request(.POST, endpoint: "locations/new", parameters: parameters) { (request, response, json) -> Void in
                 
                 if json["success"] as? Int == 1 {
-                    println("Location updated successfully")
+                    print("Location updated successfully")
                 }
                 
             }

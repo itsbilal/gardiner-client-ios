@@ -22,7 +22,7 @@ class NewPlaceViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        var lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "onLongPress:")
+        let lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "onLongPress:")
         mapView.addGestureRecognizer(lpgr)
     }
     
@@ -31,10 +31,10 @@ class NewPlaceViewController: UIViewController {
             return
         }
         
-        var touchPoint:CGPoint = gestureRecognizer.locationInView(mapView)
-        var locationCoordinate:CLLocationCoordinate2D = mapView.convertPoint(touchPoint, toCoordinateFromView: mapView)
+        let touchPoint:CGPoint = gestureRecognizer.locationInView(mapView)
+        let locationCoordinate:CLLocationCoordinate2D = mapView.convertPoint(touchPoint, toCoordinateFromView: mapView)
         
-        var annotation:MKPointAnnotation = MKPointAnnotation()
+        let annotation:MKPointAnnotation = MKPointAnnotation()
         annotation.title = "Location to add"
         annotation.coordinate = locationCoordinate
         

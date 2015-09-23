@@ -28,7 +28,7 @@ class NewPlace2ViewController: UITableViewController {
     
     @IBAction func onPlaceSubmit(sender: AnyObject) {
         
-        var parameters:[String:String] = ["title": titleTextField.text, "latX": String(format: "%f", location!.latitude), "latY": String(format: "%f", location!.longitude)]
+        let parameters:[String:String] = ["title": titleTextField.text!, "latX": String(format: "%f", location!.latitude), "latY": String(format: "%f", location!.longitude)]
         
         RestApi.instance.request(.POST, endpoint: "user/myself/places/", parameters: parameters) { (request, response, json) -> Void in
             

@@ -105,8 +105,8 @@ class ContactsViewController: UITableViewController {
         refresh()
 
         var error:Unmanaged<CFError>? = nil
-        var addressBook:ABAddressBook = ABAddressBookCreateWithOptions(nil, &error).takeRetainedValue()
-        var authStatus = ABAddressBookGetAuthorizationStatus()
+        let addressBook:ABAddressBook = ABAddressBookCreateWithOptions(nil, &error).takeRetainedValue()
+        let authStatus = ABAddressBookGetAuthorizationStatus()
         if authStatus == ABAuthorizationStatus.NotDetermined {
             
             ABAddressBookRequestAccessWithCompletion(addressBook, { (granted, error) -> Void in
@@ -126,7 +126,7 @@ class ContactsViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("requestsListCell") as! UITableViewCell
+        let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("requestsListCell")!
         var contact:Contact?
         if indexPath.section == 0 {
             contact = self.requests[indexPath.row]
@@ -176,7 +176,7 @@ class ContactsViewController: UITableViewController {
             RestApi.instance.request(.POST, endpoint: "contacts/requests/\(contact.requestId)/respond", parameters: ["response":"1"])
         case 1:
             let contact:Contact = self.otherContacts[indexPath.row]
-            var confirmer:UIAlertController = UIAlertController(title: "Request", message: "Are you sure you want to send a contact request to \(contact.name)?", preferredStyle: UIAlertControllerStyle.Alert)
+            let confirmer:UIAlertController = UIAlertController(title: "Request", message: "Are you sure you want to send a contact request to \(contact.name)?", preferredStyle: UIAlertControllerStyle.Alert)
             confirmer.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 contact.request()
                 confirmer.dismissViewControllerAnimated(true, completion: nil)
@@ -194,7 +194,7 @@ class ContactsViewController: UITableViewController {
     func refresh() {
         RestApi.instance.request(.GET, endpoint: "contacts/requests", callback: { (request, response, json) -> Void in
             for request in json["requests"] as! NSArray {
-                var contact:Contact = Contact.parseJson(request["from"] as! NSDictionary)
+                let contact:Contact = Contact.parseJson(request["from"] as! NSDictionary)
                 contact.requestId = request["id"] as! String
                 
                 self.requests.append(contact)

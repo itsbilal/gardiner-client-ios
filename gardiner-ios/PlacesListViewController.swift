@@ -15,7 +15,7 @@ class Place {
     var longitude: Double = 0.0
 }
 
-class PlacesListViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+class PlacesListViewController: UITableViewController {
     
     var places: [Place] = []
 
@@ -38,7 +38,7 @@ class PlacesListViewController: UITableViewController, UITableViewDataSource, UI
             self.places.removeAll()
             
             for place in json["places"] as! [[String: AnyObject]] {
-                var placeObj:Place = Place()
+                let placeObj:Place = Place()
                 placeObj.name = place["title"] as! String
                 placeObj.id = place["id"]as! String
                 placeObj.latitude = place["latX"] as! Double
@@ -72,7 +72,7 @@ class PlacesListViewController: UITableViewController, UITableViewDataSource, UI
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("placeListCell", forIndexPath: indexPath) as! UITableViewCell
+        let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("placeListCell", forIndexPath: indexPath) 
 
         // Configure the cell...
         cell.textLabel?.text = places[indexPath.row].name

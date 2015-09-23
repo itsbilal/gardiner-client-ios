@@ -24,15 +24,15 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        var creds = RestApi.instance.credStorage.defaultCredentialForProtectionSpace(RestApi.instance.protectionSpace)
+        let creds = RestApi.instance.credStorage.defaultCredentialForProtectionSpace(RestApi.instance.protectionSpace)
                 
         if creds == nil {
-            println("doing segue")
+            print("doing segue")
             
             performSegueWithIdentifier("onLoginNeeded", sender: self)
         } else {
             // Assume RestApi is logged in
-            println("Logged in")
+            print("Logged in")
             
             RestApi.instance.onLogin {
                 self.reloadHome()
@@ -46,8 +46,8 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:HomeListCell = tableView.dequeueReusableCellWithIdentifier("homeListCell", forIndexPath: indexPath) as! HomeListCell
-        var listItem:Contact = self.homeList[indexPath.row]
+        let cell:HomeListCell = tableView.dequeueReusableCellWithIdentifier("homeListCell", forIndexPath: indexPath) as! HomeListCell
+        let listItem:Contact = self.homeList[indexPath.row]
         
         cell.setPerson(listItem)
         
@@ -55,7 +55,7 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        println("Counting list")
+        print("Counting list")
         return self.homeList.count
     }
     
@@ -81,11 +81,11 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
         
         RestApi.instance.request(.GET, endpoint: "user/myself", callback: { (request, response, json) -> Void in
             for place in json["places"] as! [ NSDictionary ] {
-                var latitude:Double     = place["latX"] as! Double
-                var longitude:Double    = place["latY"] as! Double
-                var identifier:String   = place["id"] as! String
+                let latitude:Double     = place["latX"] as! Double
+                let longitude:Double    = place["latY"] as! Double
+                let identifier:String   = place["id"] as! String
                 
-                var region:CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(latitude, longitude), radius: 100, identifier: identifier)
+                let region:CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(latitude, longitude), radius: 100, identifier: identifier)
                 
                 let appDel:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
                 

@@ -36,7 +36,7 @@ class LoginViewController: UIViewController {
         
         var restApi: RestApi = RestApi.instance
         
-        restApi.setCredentials(textEmail.text, password: textPassword.text, onSuccess: {() in
+        restApi.setCredentials(textEmail.text!, password: textPassword.text!, onSuccess: {() in
                 self.textEmail.text = "Success!"
                 self.dismissViewControllerAnimated(true, completion: { () -> Void in
                 })
