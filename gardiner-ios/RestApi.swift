@@ -8,7 +8,7 @@
 
 import Foundation
 
-let BASE_URL:String = "http://104.131.171.82:8080/"
+let BASE_URL:String = "http://159.203.73.79:8080/"
 
 enum Method : CustomStringConvertible {
     case GET
@@ -54,7 +54,7 @@ class RestApi: NSObject {
     
     
     let protectionSpace:NSURLProtectionSpace = NSURLProtectionSpace(
-        host: "104.131.171.82",
+        host: "159.203.73.79",
         port: 8080,
         `protocol`: "http",
         realm: nil,
