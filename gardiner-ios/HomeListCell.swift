@@ -31,7 +31,7 @@ class HomeListCell: UITableViewCell {
         
         cardRectangle.layer.cornerRadius = 2
         cardRectangle.layer.masksToBounds = false
-        cardRectangle.layer.shadowOffset = CGSizeMake(0, 1)
+        cardRectangle.layer.shadowOffset = CGSize(width: 0, height: 1)
         cardRectangle.layer.shadowRadius = 1
         cardRectangle.layer.shadowOpacity = 0.3
         
@@ -41,17 +41,17 @@ class HomeListCell: UITableViewCell {
         //profilePic.image = UIImage(named: "tabbar_home")
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
     
-    func setPerson(contact: Contact) {
+    func setPerson(_ contact: Contact) {
         nameLabel.text = contact.name
         
         if contact.at != nil {
-            switch contact.at!.uppercaseString {
+            switch contact.at!.uppercased() {
             case "HOME":
                 locationTypeLabel.text = "HOME"
                 locationTypeImage.image = UIImage(named: "tabbar_home")

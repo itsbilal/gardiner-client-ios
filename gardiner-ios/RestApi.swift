@@ -11,29 +11,29 @@ import Foundation
 let BASE_URL:String = "http://159.203.73.79:8080/"
 
 enum Method : CustomStringConvertible {
-    case GET
-    case POST
-    case PUT
-    case DELETE
+    case get
+    case post
+    case put
+    case delete
     
     var description:String {
         switch self {
-        case .GET: return "GET";
-        case .POST: return "POST";
-        case .PUT: return "PUT";
-        case .DELETE: return "DELETE";
+        case .get: return "GET";
+        case .post: return "POST";
+        case .put: return "PUT";
+        case .delete: return "DELETE";
         }
     }
 }
 
 enum ParameterEncoding {
-    case URL
-    case JSON
+    case url
+    case json
     
     var mimeType:String {
         switch self {
-        case .URL: return "application/x-www-form-urlencoded";
-        case .JSON: return "application/json";
+        case .url: return "application/x-www-form-urlencoded";
+        case .json: return "application/json";
         }
     }
 }
@@ -53,14 +53,14 @@ class RestApi: NSObject {
     var password: String!
     
     
-    let protectionSpace:NSURLProtectionSpace = NSURLProtectionSpace(
+    let protectionSpace:URLProtectionSpace = URLProtectionSpace(
         host: "159.203.73.79",
         port: 8080,
-        `protocol`: "http",
+        protocol: "http",
         realm: nil,
         authenticationMethod: NSURLAuthenticationMethodHTMLForm
     )
-    var credStorage:NSURLCredentialStorage = NSURLCredentialStorage.sharedCredentialStorage()
+    var credStorage:URLCredentialStorage = URLCredentialStorage.shared
     
     var onLoginCallbacks: [() -> Void] = []
     
@@ -69,7 +69,7 @@ class RestApi: NSObject {
         loggedIn = false
         super.init()
         
-        let creds:NSURLCredential? = credStorage.defaultCredentialForProtectionSpace(protectionSpace)
+        let creds:URLCredential? = credStorage.defaultCredential(for: protectionSpace)
 
         if creds != nil {
             email = creds?.user
@@ -79,8 +79,8 @@ class RestApi: NSObject {
         }
         
         
-        request(Method.POST, endpoint: "user/login/", parameters: ["email": email, "password": password]) {(request, response, json) in
-                if response?.statusCode != 200 || json.objectForKey("error") != nil {
+        request(Method.post, endpoint: "user/login/", parameters: ["email": email as AnyObject, "password": password as AnyObject]) {(request, response, json) in
+                if response?.statusCode != 200 || json.object(forKey: "error") != nil {
                     self.logout()
                     print("Invalid credentials")
                     
@@ -96,7 +96,7 @@ class RestApi: NSObject {
             }
     }
     
-    func onLogin(callback: () -> Void) {
+    func onLogin(_ callback: @escaping () -> Void) {
         if self.token.isEmpty {
             onLoginCallbacks.append(callback)
         } else {
@@ -105,28 +105,28 @@ class RestApi: NSObject {
     }
     
     // Wrapper for the Alamofire.request function that does our own error handling
-    func request(method: Method, endpoint: String, parameters: [String:AnyObject] = [:], callback: ((NSURLRequest, NSHTTPURLResponse?, NSDictionary) -> Void)? = nil ) {
+    func request(_ method: Method, endpoint: String, parameters: [String:AnyObject] = [:], callback: ((URLRequest, HTTPURLResponse?, NSDictionary) -> Void)? = nil ) {
         
-        var encoding:ParameterEncoding = .URL
-        if method == .POST {
-            encoding = .JSON
+        var encoding:ParameterEncoding = .url
+        if method == .post {
+            encoding = .json
         }
         
-        let url:NSURL = NSURL(string: BASE_URL + endpoint)!
-        var urlRequest:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        urlRequest.HTTPMethod = method.description
+        let url:URL = URL(string: BASE_URL + endpoint)!
+        var urlRequest:NSMutableURLRequest = NSMutableURLRequest(url: url)
+        urlRequest.httpMethod = method.description
         urlRequest.setValue(encoding.mimeType, forHTTPHeaderField: "Content-Type")
     
         if loggedIn && !token.isEmpty {
             urlRequest.setValue(token, forHTTPHeaderField: "X-WWW-Authenticate")
         }
         
-        var requestBody:NSData?
+        var requestBody:Data?
         if parameters.count > 0 {
-            if encoding == .JSON {
+            if encoding == .json {
                 var error:NSError?
                 do {
-                    requestBody = try NSJSONSerialization.dataWithJSONObject(parameters, options: [])
+                    requestBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
                 } catch var error1 as NSError {
                     error = error1
                     requestBody = nil
@@ -139,14 +139,14 @@ class RestApi: NSObject {
                 for (key, value) in parameters as! [String:String] {
                     requestString += "\(key)=\(value)&"
                 }
-                requestString = requestString.substringToIndex(requestString.endIndex.advancedBy(-1))
-                requestBody = requestString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+                requestString = requestString.substring(to: requestString.characters.index(requestString.endIndex, offsetBy: -1))
+                requestBody = requestString.data(using: String.Encoding.utf8, allowLossyConversion: false)
             }
-            urlRequest.HTTPBody = requestBody!
+            urlRequest.httpBody = requestBody!
         }
         
-        let session:NSURLSession = NSURLSession.sharedSession()
-        let sessionTask:NSURLSessionDataTask = session.dataTaskWithRequest(urlRequest, completionHandler: { (rawdata, response, error) -> Void in
+        let session:URLSession = URLSession.shared
+        let sessionTask:URLSessionDataTask = session.dataTask(with: urlRequest, completionHandler: { (rawdata, response, error) -> Void in
             
             if error != nil {
                 print(error)
@@ -154,7 +154,7 @@ class RestApi: NSObject {
             }
             
             var jsonReadError: NSError?
-            let json:NSDictionary = (try! NSJSONSerialization.JSONObjectWithData(rawdata!, options: [])) as! NSDictionary
+            let json:NSDictionary = (try! JSONSerialization.jsonObject(with: rawdata!, options: [])) as! NSDictionary
             
             print(json)
 
@@ -169,15 +169,15 @@ class RestApi: NSObject {
             }
             
             
-            if (response as! NSHTTPURLResponse).statusCode == 200 && json.objectForKey("error") == nil {
-                callback?(urlRequest, response as? NSHTTPURLResponse, json)
-            } else if json.objectForKey("error") != nil {
-                if (json.objectForKey("code") as? Int) == 1000 && self.email != nil {
+            if (response as! HTTPURLResponse).statusCode == 200 && json.object(forKey: "error") == nil {
+                callback?(urlRequest, response as? HTTPURLResponse, json)
+            } else if json.object(forKey: "error") != nil {
+                if (json.object(forKey: "code") as? Int) == 1000 && self.email != nil {
                     // Relogin
                     print("Relogin time!")
                     self.logout()
                     
-                    self.request(.POST, endpoint: "user/login/", parameters: ["email": self.email, "password": self.password]) { (URLrequest2, URLresponse2, data2) -> Void in
+                    self.request(.post, endpoint: "user/login/", parameters: ["email": self.email, "password": self.password]) { (URLrequest2, URLresponse2, data2) -> Void in
                             var json2:NSDictionary = data2
                             self.setSessionToken(json2["token"] as! String)
                             
@@ -198,16 +198,16 @@ class RestApi: NSObject {
         sessionTask.resume()
     }
     
-    func setCredentials(email:String, password: String, onSuccess: () -> Void, onFailure: () -> Void) {
+    func setCredentials(_ email:String, password: String, onSuccess: @escaping () -> Void, onFailure: @escaping () -> Void) {
         
-        let creds = NSURLCredential(user: email, password: password, persistence: NSURLCredentialPersistence.Permanent)
-        self.credStorage.setDefaultCredential(creds, forProtectionSpace: protectionSpace)
+        let creds = URLCredential(user: email, password: password, persistence: URLCredential.Persistence.permanent)
+        self.credStorage.setDefaultCredential(creds, for: protectionSpace)
         
         self.email = email
         self.password = password
         
-        request(.POST, endpoint: "user/login/", parameters: ["email": email, "password": password]) {(request, response, json) in
-            if response?.statusCode != 200 || json.objectForKey("error") != nil {
+        request(.post, endpoint: "user/login/", parameters: ["email": email as AnyObject, "password": password as AnyObject]) {(request, response, json) in
+            if response?.statusCode != 200 || json.object(forKey: "error") != nil {
                 self.logout()
                 print("Invalid credentials")
                 
@@ -226,7 +226,7 @@ class RestApi: NSObject {
         }
     }
     
-    func setSessionToken(token:String) {
+    func setSessionToken(_ token:String) {
         self.loggedIn = true
         self.token = token
         

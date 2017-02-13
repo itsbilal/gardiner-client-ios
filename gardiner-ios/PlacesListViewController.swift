@@ -32,8 +32,8 @@ class PlacesListViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
-    override func viewDidAppear(animated: Bool) {
-        RestApi.instance.request(.GET, endpoint: "user/myself", callback: { (request, response, json) -> Void in
+    override func viewDidAppear(_ animated: Bool) {
+        RestApi.instance.request(.get, endpoint: "user/myself", callback: { (request, response, json) -> Void in
             
             self.places.removeAll()
             
@@ -58,21 +58,21 @@ class PlacesListViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         return places.count
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("placeListCell", forIndexPath: indexPath) 
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "placeListCell", for: indexPath) 
 
         // Configure the cell...
         cell.textLabel?.text = places[indexPath.row].name
@@ -80,20 +80,20 @@ class PlacesListViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.Delete {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
             
-            RestApi.instance.request(.DELETE, endpoint: "user/myself/places/"+places[indexPath.row].id, callback: { (request, response, json) -> Void in
-                self.places.removeAtIndex(indexPath.row)
+            RestApi.instance.request(.delete, endpoint: "user/myself/places/"+places[indexPath.row].id, callback: { (request, response, json) -> Void in
+                self.places.remove(at: indexPath.row)
                 return
             })
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
 
         }
     }
     
-    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-        return UITableViewCellEditingStyle.Delete
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return UITableViewCellEditingStyle.delete
     }
 
     /*

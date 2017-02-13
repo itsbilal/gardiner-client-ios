@@ -19,7 +19,7 @@ class Contact {
     
     var locations: [[String: Double]] = []
     
-    class func parseList(rawdata:NSDictionary) -> [Contact] {
+    class func parseList(_ rawdata:NSDictionary) -> [Contact] {
         var list:[Contact] = []
         
         if rawdata["users"] != nil {
@@ -33,7 +33,7 @@ class Contact {
         return list
     }
     
-    class func parseJson(rawContact: NSDictionary) -> Contact {
+    class func parseJson(_ rawContact: NSDictionary) -> Contact {
         let contact:Contact = Contact()
         
         contact.id          = rawContact["id"] as! String
@@ -60,6 +60,6 @@ class Contact {
     }
     
     func request() {
-        RestApi.instance.request(.POST, endpoint: "contacts/user/\(self.id)/request")
+        RestApi.instance.request(.post, endpoint: "contacts/user/\(self.id)/request")
     }
 }

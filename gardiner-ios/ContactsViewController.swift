@@ -63,15 +63,15 @@ class ContactsViewController: UITableViewController {
         }
     }*/
     
-    func checkContacts(addressBook: ABAddressBook) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+    func checkContacts(_ addressBook: ABAddressBook) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
             let contacts = ABAddressBookCopyArrayOfAllPeople(addressBook).takeRetainedValue() as NSArray as [ABRecord]
             var phoneNumbers:[String] = []
             
             for contact in contacts {
                 
                 if ABRecordGetRecordType(contact) == UInt32(kABPersonType)  {
-                    let phoneNumberProperty:ABMultiValueRef = ABRecordCopyValue(contact, kABPersonPhoneProperty).takeRetainedValue() as ABMultiValueRef
+                    let phoneNumberProperty:ABMultiValue = ABRecordCopyValue(contact, kABPersonPhoneProperty).takeRetainedValue() as ABMultiValue
                     
                     let phoneNumberValues:[String] = ABMultiValueCopyArrayOfAllValues(phoneNumberProperty).takeUnretainedValue() as NSArray as! [String]
                     
@@ -86,10 +86,10 @@ class ContactsViewController: UITableViewController {
                 return
             }
             
-            RestApi.instance.request(.POST, endpoint: "contacts/search", parameters: ["phoneNumbers": phoneNumbers]) { (request, response, json) -> Void in
+            RestApi.instance.request(.post, endpoint: "contacts/search", parameters: ["phoneNumbers": phoneNumbers]) { (request, response, json) -> Void in
                 self.otherContacts = Contact.parseList(json)
                 
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
                 
@@ -107,14 +107,14 @@ class ContactsViewController: UITableViewController {
         var error:Unmanaged<CFError>? = nil
         let addressBook:ABAddressBook = ABAddressBookCreateWithOptions(nil, &error).takeRetainedValue()
         let authStatus = ABAddressBookGetAuthorizationStatus()
-        if authStatus == ABAuthorizationStatus.NotDetermined {
+        if authStatus == ABAuthorizationStatus.notDetermined {
             
             ABAddressBookRequestAccessWithCompletion(addressBook, { (granted, error) -> Void in
                 if granted == true {
                     self.checkContacts(addressBook)
                 }
             })
-        } else if authStatus == ABAuthorizationStatus.Authorized {
+        } else if authStatus == ABAuthorizationStatus.authorized {
             checkContacts(addressBook)
         }
         
@@ -125,8 +125,8 @@ class ContactsViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("requestsListCell")!
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "requestsListCell")!
         var contact:Contact?
         if indexPath.section == 0 {
             contact = self.requests[indexPath.row]
@@ -139,11 +139,11 @@ class ContactsViewController: UITableViewController {
         return cell
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
         
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             // Requests
             return requests.count
@@ -155,7 +155,7 @@ class ContactsViewController: UITableViewController {
         return 1
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
             return "Requests"
@@ -166,33 +166,33 @@ class ContactsViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0:
             let contact:Contact = self.requests[indexPath.row]
-            self.requests.removeAtIndex(indexPath.row)
+            self.requests.remove(at: indexPath.row)
             tableView.reloadData()
             
-            RestApi.instance.request(.POST, endpoint: "contacts/requests/\(contact.requestId)/respond", parameters: ["response":"1"])
+            RestApi.instance.request(.post, endpoint: "contacts/requests/\(contact.requestId)/respond", parameters: ["response":"1"])
         case 1:
             let contact:Contact = self.otherContacts[indexPath.row]
-            let confirmer:UIAlertController = UIAlertController(title: "Request", message: "Are you sure you want to send a contact request to \(contact.name)?", preferredStyle: UIAlertControllerStyle.Alert)
-            confirmer.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            let confirmer:UIAlertController = UIAlertController(title: "Request", message: "Are you sure you want to send a contact request to \(contact.name)?", preferredStyle: UIAlertControllerStyle.alert)
+            confirmer.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: { (action) -> Void in
                 contact.request()
-                confirmer.dismissViewControllerAnimated(true, completion: nil)
+                confirmer.dismiss(animated: true, completion: nil)
             }))
-            confirmer.addAction(UIAlertAction(title: "No", style: .Cancel, handler: { (action) -> Void in
-                confirmer.dismissViewControllerAnimated(true, completion: nil)
+            confirmer.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (action) -> Void in
+                confirmer.dismiss(animated: true, completion: nil)
             }))
-            self.presentViewController(confirmer, animated: true, completion: nil)
+            self.present(confirmer, animated: true, completion: nil)
         default:
             break
         }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func refresh() {
-        RestApi.instance.request(.GET, endpoint: "contacts/requests", callback: { (request, response, json) -> Void in
+        RestApi.instance.request(.get, endpoint: "contacts/requests", callback: { (request, response, json) -> Void in
             for request in json["requests"] as! NSArray {
                 let contact:Contact = Contact.parseJson(request["from"] as! NSDictionary)
                 contact.requestId = request["id"] as! String

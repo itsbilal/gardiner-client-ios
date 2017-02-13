@@ -26,14 +26,14 @@ class NewPlace2ViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func onPlaceSubmit(sender: AnyObject) {
+    @IBAction func onPlaceSubmit(_ sender: AnyObject) {
         
         let parameters:[String:String] = ["title": titleTextField.text!, "latX": String(format: "%f", location!.latitude), "latY": String(format: "%f", location!.longitude)]
         
-        RestApi.instance.request(.POST, endpoint: "user/myself/places/", parameters: parameters) { (request, response, json) -> Void in
+        RestApi.instance.request(.post, endpoint: "user/myself/places/", parameters: parameters) { (request, response, json) -> Void in
             
             if json["success"] as? Int == 1 {
-                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                self.navigationController?.dismiss(animated: true, completion: nil)
             }
             
         }

@@ -27,7 +27,7 @@ class PersonLocationViewController: UIViewController {
             setMapLocation(contact.locations[0]["latX"],
                 longitude: contact.locations[0]["latY"])
         } else {
-            mapView.hidden = true
+            mapView.isHidden = true
             print("hiding mapview")
         }
     }
@@ -47,7 +47,7 @@ class PersonLocationViewController: UIViewController {
     }
     */
     
-    func setMapLocation(latitude: Double?, longitude: Double?) {
+    func setMapLocation(_ latitude: Double?, longitude: Double?) {
         let annotation:MKPointAnnotation = MKPointAnnotation()
         let coordinate:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!)
         
@@ -56,7 +56,7 @@ class PersonLocationViewController: UIViewController {
         annotation.subtitle = "Location"
         
         mapView.addAnnotation(annotation)
-        mapView.setCenterCoordinate(coordinate, animated: false)
+        mapView.setCenter(coordinate, animated: false)
         // Set region
         
         let region:MKCoordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000)

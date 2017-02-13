@@ -23,7 +23,7 @@ class LoginViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func onLogin(sender: UIButton) {
+    @IBAction func onLogin(_ sender: UIButton) {
         
         /*Alamofire.request(.POST, "http://localhost:8080/user/login", parameters: ["email": textEmail.text,
             "password": textPassword.text], encoding: .URL)
@@ -38,7 +38,7 @@ class LoginViewController: UIViewController {
         
         restApi.setCredentials(textEmail.text!, password: textPassword.text!, onSuccess: {() in
                 self.textEmail.text = "Success!"
-                self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                self.dismiss(animated: true, completion: { () -> Void in
                 })
             }, onFailure: {() in
                 self.textEmail.text = "Fail"

@@ -22,17 +22,17 @@ class NewPlaceViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        let lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "onLongPress:")
+        let lpgr:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(NewPlaceViewController.onLongPress(_:)))
         mapView.addGestureRecognizer(lpgr)
     }
     
-    func onLongPress(gestureRecognizer:UIGestureRecognizer) {
-        if gestureRecognizer.state != UIGestureRecognizerState.Began {
+    func onLongPress(_ gestureRecognizer:UIGestureRecognizer) {
+        if gestureRecognizer.state != UIGestureRecognizerState.began {
             return
         }
         
-        let touchPoint:CGPoint = gestureRecognizer.locationInView(mapView)
-        let locationCoordinate:CLLocationCoordinate2D = mapView.convertPoint(touchPoint, toCoordinateFromView: mapView)
+        let touchPoint:CGPoint = gestureRecognizer.location(in: mapView)
+        let locationCoordinate:CLLocationCoordinate2D = mapView.convert(touchPoint, toCoordinateFrom: mapView)
         
         let annotation:MKPointAnnotation = MKPointAnnotation()
         annotation.title = "Location to add"
@@ -41,7 +41,7 @@ class NewPlaceViewController: UIViewController {
         self.mapView.addAnnotation(annotation)
         
         currentSelectedCoordinate = locationCoordinate
-        self.nextBarButton.enabled = true
+        self.nextBarButton.isEnabled = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,18 +49,18 @@ class NewPlaceViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func onCancelButtonClick(sender: AnyObject) {
-        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func onCancelButtonClick(_ sender: AnyObject) {
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        (segue.destinationViewController as! NewPlace2ViewController).location = self.currentSelectedCoordinate
+        (segue.destination as! NewPlace2ViewController).location = self.currentSelectedCoordinate
     }
     
 

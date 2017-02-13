@@ -21,15 +21,15 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        let creds = RestApi.instance.credStorage.defaultCredentialForProtectionSpace(RestApi.instance.protectionSpace)
+        let creds = RestApi.instance.credStorage.defaultCredential(for: RestApi.instance.protectionSpace)
                 
         if creds == nil {
             print("doing segue")
             
-            performSegueWithIdentifier("onLoginNeeded", sender: self)
+            performSegue(withIdentifier: "onLoginNeeded", sender: self)
         } else {
             // Assume RestApi is logged in
             print("Logged in")
@@ -45,8 +45,8 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:HomeListCell = tableView.dequeueReusableCellWithIdentifier("homeListCell", forIndexPath: indexPath) as! HomeListCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell:HomeListCell = tableView.dequeueReusableCell(withIdentifier: "homeListCell", for: indexPath) as! HomeListCell
         let listItem:Contact = self.homeList[indexPath.row]
         
         cell.setPerson(listItem)
@@ -54,32 +54,32 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
         return cell
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("Counting list")
         return self.homeList.count
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
         
-        self.performSegueWithIdentifier("homeListDetail", sender: self.homeList[indexPath.row])
+        self.performSegue(withIdentifier: "homeListDetail", sender: self.homeList[indexPath.row])
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "homeListDetail" {
-            (segue.destinationViewController as! PersonLocationViewController).contact = sender as! Contact
+            (segue.destination as! PersonLocationViewController).contact = sender as! Contact
         }
     }
     
     func reloadHome() -> Void {
-        RestApi.instance.request(.GET, endpoint: "locations/", callback: { (request, response, json) -> Void in
+        RestApi.instance.request(.get, endpoint: "locations/", callback: { (request, response, json) -> Void in
             self.homeList = Contact.parseList(json)
             
             self.tableView.reloadData()
             
         })
         
-        RestApi.instance.request(.GET, endpoint: "user/myself", callback: { (request, response, json) -> Void in
+        RestApi.instance.request(.get, endpoint: "user/myself", callback: { (request, response, json) -> Void in
             for place in json["places"] as! [ NSDictionary ] {
                 let latitude:Double     = place["latX"] as! Double
                 let longitude:Double    = place["latY"] as! Double
@@ -87,7 +87,7 @@ class MainViewController: UITableViewController, CLLocationManagerDelegate {
                 
                 let region:CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(latitude, longitude), radius: 100, identifier: identifier)
                 
-                let appDel:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                let appDel:AppDelegate = UIApplication.shared.delegate as! AppDelegate
                 
                 appDel.locations.append(region)
                 appDel.locationsUpdated()
